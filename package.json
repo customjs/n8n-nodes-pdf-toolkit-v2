@@ -11,7 +11,7 @@
   "homepage": "https://www.customjs.space/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/customjs/n8n-nodes-pdf-toolkit.git"
+    "url": "https://github.com/customjs/n8n-nodes-pdf-toolkit-v2.git"
   },
   "license": "MIT",
   "author": {
