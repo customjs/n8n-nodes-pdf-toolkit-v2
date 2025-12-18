@@ -10,8 +10,7 @@ services:
     environment:
       - NODE_ENV=development
       - N8N_SECURE_COOKIE=false
-      - N8N_USER_EMAIL=admin@example.com
-      - N8N_USER_PASSWORD=supersecret
+      - N8N_USER_MANAGEMENT_DISABLED=true
       - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
       - DB_SQLITE_POOL_SIZE=5
       - N8N_RUNNERS_ENABLED=true
