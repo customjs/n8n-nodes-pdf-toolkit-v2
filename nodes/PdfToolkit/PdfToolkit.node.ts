@@ -15,7 +15,7 @@ import { executeData } from './modules/Data';
 
 export class PdfToolkit implements INodeType {
     description: INodeTypeDescription = {
-        displayName: 'PDF & File Toolkit',
+        displayName: 'CustomJS (PDF & File Toolkit)',
         name: 'pdfToolkit',
         icon: 'file:customJs.svg',
         group: ['transform'],
