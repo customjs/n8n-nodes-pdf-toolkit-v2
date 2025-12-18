@@ -19,7 +19,7 @@ services:
       - CUSTOMJS_API_KEY=${CUSTOMJS_API_KEY}
     volumes:
       - n8n_data:/home/node/.n8n
-      - ./dist:/home/node/.n8n/custom/node_modules/@custom-js/n8n-nodes-pdf-toolkit
+      - ./dist:/home/node/.n8n/custom/node_modules/@custom-js/n8n-nodes-pdf-toolkitV2
       - ./testWorkflows:/tmp/workflows:ro
       - ./docker-entrypoint.sh:/docker-entrypoint.sh:ro
     entrypoint: ["/bin/sh", "/docker-entrypoint.sh"]

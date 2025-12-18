@@ -27,8 +27,12 @@ export async function executeMerge(
         }).filter(f => f);
         body.input = { files };
     } else {
-        const urls = executeFunctions.getNodeParameter('urls', itemIndex) as string;
-        body.input = { urls: urls.split(',').map(u => u.trim()) };
+        const urls = executeFunctions.getNodeParameter('urls', itemIndex) as string | string[];
+        if (Array.isArray(urls)) {
+            body.input = { urls: urls.map(u => u.trim()) };
+        } else {
+            body.input = { urls: urls.split(',').map(u => u.trim()) };
+        }
     }
 
     const response = await apiHelper.makeRequest('n8n/mergePDFs', body, true, itemIndex);

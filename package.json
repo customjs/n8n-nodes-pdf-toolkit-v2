@@ -1,5 +1,5 @@
 {
-  "name": "@custom-js/n8n-nodes-pdf-toolkit",
+  "name": "@custom-js/n8n-nodes-pdf-toolkitV2",
   "version": "1.54.0",
   "description": "This is official node for interacting with APIs from customjs.space",
   "keywords": [
@@ -28,25 +28,7 @@
       "dist/credentials/CustomJsApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/PdfToolkit/PdfToolkit.node.js",
-      "dist/nodes/Scraper/Scraper.node.js",
-      "dist/nodes/SSLChecker/SSLChecker.node.js",
-      "dist/nodes/Html2Pdf/Html2Pdf.node.js",
-      "dist/nodes/WebsiteScreenshot/WebsiteScreenshot.node.js",
-      "dist/nodes/MergePdfs/MergePdfs.node.js",
-      "dist/nodes/PdfToText/PdfToText.node.js",
-      "dist/nodes/PdfToPng/PdfToPng.node.js",
-      "dist/nodes/ExtractPages/ExtractPages.node.js",
-      "dist/nodes/CompressPDF/CompressPDF.node.js",
-      "dist/nodes/Markdown2Html/Markdown2Html.node.js",
-      "dist/nodes/Html2Docx/Html2Docx.node.js",
-      "dist/nodes/GetFormFieldNames/GetFormFieldNames.node.js",
-      "dist/nodes/PdfFormFill/PdfFormFill.node.js",
-      "dist/nodes/InvoiceGenerator/InvoiceGenerator.node.js",
-      "dist/nodes/JsonToToon/JsonToToon.node.js",
-      "dist/nodes/ToonToJson/ToonToJson.node.js",
-      "dist/nodes/AdvancedJsonSelector/AdvancedJsonSelector.node.js",
-      "dist/nodes/AdvancedRegexTool/AdvancedRegexTool.node.js"
+      "dist/nodes/PdfToolkit/PdfToolkit.node.js"
     ]
   },
   "devDependencies": {
