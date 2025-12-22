@@ -18,9 +18,8 @@ export async function executePdfToText(
 
     if (inputType === 'binary') {
         const binaryPropertyName = executeFunctions.getNodeParameter('binaryPropertyName', itemIndex) as string;
-        const binaryData = item.binary?.[binaryPropertyName];
-        if (!binaryData) throw new Error(`Binary property ${binaryPropertyName} not found`);
-        body.input = { file: Buffer.from(binaryData.data, 'base64') };
+        const buffer = await executeFunctions.helpers.getBinaryDataBuffer(itemIndex, binaryPropertyName);
+        body.input = { file: buffer };
     } else {
         const url = executeFunctions.getNodeParameter('url', itemIndex) as string;
         body.input = { urls: url };
