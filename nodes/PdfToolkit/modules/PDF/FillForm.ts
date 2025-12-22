@@ -8,12 +8,11 @@ export async function executeFillForm(
 ): Promise<INodeExecutionData> {
     const item = executeFunctions.getInputData()[itemIndex];
     const binaryPropertyName = executeFunctions.getNodeParameter('binaryPropertyName', itemIndex) as string;
-    const binaryData = item.binary?.[binaryPropertyName];
-    if (!binaryData) throw new Error(`Binary property ${binaryPropertyName} not found`);
+    const buffer = await executeFunctions.helpers.getBinaryDataBuffer(itemIndex, binaryPropertyName);
 
     const formFields = (executeFunctions.getNodeParameter('formFields', itemIndex) as any)?.field || [];
     const body = {
-        input: { file: Buffer.from(binaryData.data, 'base64'), fields: formFields },
+        input: { file: buffer, fields: formFields },
         code: `
 			const { PDF_FILL_FORM } = require('./utils'); 
 			const pdfInput = input.file;
