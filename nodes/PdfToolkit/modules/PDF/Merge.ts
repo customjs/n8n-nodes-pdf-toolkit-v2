@@ -21,11 +21,15 @@ export async function executeMerge(
         if (itemIndex > 0) return { json: {}, pairedItem: { item: itemIndex } }; // Skip subsequent items
 
         const items = executeFunctions.getInputData();
-        const files = items.map(itm => {
-            const bin = itm.binary?.[executeFunctions.getNodeParameter('binaryPropertyName', 0) as string];
-            return bin ? Buffer.from(bin.data, 'base64') : null;
-        }).filter(f => f);
-        body.input = { files };
+        const binaryPropertyName = executeFunctions.getNodeParameter('binaryPropertyName', 0) as string;
+        const files = await Promise.all(items.map(async (itm, idx) => {
+            if (itm.binary && itm.binary[binaryPropertyName]) {
+                return await executeFunctions.helpers.getBinaryDataBuffer(idx, binaryPropertyName);
+            }
+            return null;
+        }));
+        const validFiles = files.filter(f => f);
+        body.input = { files: validFiles };
     } else {
         const urls = executeFunctions.getNodeParameter('urls', itemIndex) as string | string[];
         if (Array.isArray(urls)) {
