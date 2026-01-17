@@ -137,3 +137,18 @@ Add your Api Key and store securely
 - Fill in the issuer, payment, recipient, and billing information.
 - Add items to the invoice.
 - Execute the workflow to generate the PDF invoice.
+
+### "JSON to TOON" node
+
+- Add the **JSON to TOON** node to your workflow.
+- Configure your CustomJS API credentials.
+- Input your JSON data.
+- Execute the workflow to convert JSON to TOON format.
+- TOON format can reduce AI tokenization by 40% to 60% when working with language models.
+
+### "TOON to JSON" node
+
+- Add the **TOON to JSON** node to your workflow.
+- Configure your CustomJS API credentials.
+- Input your TOON data.
+- Execute the workflow to convert TOON to JSON format.
