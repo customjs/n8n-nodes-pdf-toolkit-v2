@@ -712,7 +712,7 @@ export class PdfToolkit implements INodeType {
                 } else if (resource === 'data') {
                     result = await executeData(this, apiHelper, i, operation);
                 } else {
-                    throw new Error(`Unknown resource: ${resource}`);
+                    throw new NodeOperationError(this.getNode(), `Unknown resource: ${resource}`, { itemIndex: i });
                 }
                 returnData.push(result);
             } catch (error) {

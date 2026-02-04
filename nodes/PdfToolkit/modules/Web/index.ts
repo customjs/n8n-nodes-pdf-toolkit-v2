@@ -1,4 +1,4 @@
-import { IExecuteFunctions, INodeExecutionData } from 'n8n-workflow';
+import { IExecuteFunctions, INodeExecutionData, NodeOperationError } from 'n8n-workflow';
 import { ApiHelper } from '../ApiHelper';
 import { executeScrape } from './Scrape';
 import { executeScreenshot } from './Screenshot';
@@ -18,6 +18,6 @@ export async function executeWeb(
         case 'sslCheck':
             return executeSslCheck(executeFunctions, apiHelper, itemIndex);
         default:
-            throw new Error(`Unknown operation: ${operation}`);
+            throw new NodeOperationError(executeFunctions.getNode(), `Unknown operation: ${operation}`, { itemIndex });
     }
 }

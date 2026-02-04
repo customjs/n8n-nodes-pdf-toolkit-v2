@@ -1,4 +1,4 @@
-import { IExecuteFunctions, INodeExecutionData } from 'n8n-workflow';
+import { IExecuteFunctions, INodeExecutionData, NodeOperationError } from 'n8n-workflow';
 import { ApiHelper } from '../ApiHelper';
 import { executePdfToPng } from './PdfToPng';
 import { executePdfToText } from './PdfToText';
@@ -30,6 +30,6 @@ export async function executeConvert(
         case 'markdownToHtml':
             return executeMarkdownToHtml(executeFunctions, apiHelper, itemIndex);
         default:
-            throw new Error(`Unknown operation: ${operation}`);
+            throw new NodeOperationError(executeFunctions.getNode(), `Unknown operation: ${operation}`, { itemIndex });
     }
 }
