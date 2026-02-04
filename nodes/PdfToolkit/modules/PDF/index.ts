@@ -1,4 +1,4 @@
-import { IExecuteFunctions, INodeExecutionData } from 'n8n-workflow';
+import { IExecuteFunctions, INodeExecutionData, NodeOperationError } from 'n8n-workflow';
 import { ApiHelper } from '../ApiHelper';
 import { executeCompress } from './Compress';
 import { executeMerge } from './Merge';
@@ -27,6 +27,6 @@ export async function executePDF(
         case 'generateInvoice':
             return executeGenerateInvoice(executeFunctions, apiHelper, itemIndex);
         default:
-            throw new Error(`Unknown operation: ${operation}`);
+            throw new NodeOperationError(executeFunctions.getNode(), `Unknown operation: ${operation}`, { itemIndex });
     }
 }
