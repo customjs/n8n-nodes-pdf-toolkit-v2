@@ -12,6 +12,7 @@ import { executeConvert } from './modules/Convert';
 import { executePDF } from './modules/PDF';
 import { executeWeb } from './modules/Web';
 import { executeData } from './modules/Data';
+import { executePage } from './modules/Page';
 
 export class PdfToolkit implements INodeType {
     description: INodeTypeDescription = {
@@ -54,6 +55,10 @@ export class PdfToolkit implements INodeType {
                     {
                         name: 'Data',
                         value: 'data',
+                    },
+                    {
+                        name: 'Page',
+                        value: 'page',
                     },
                 ],
                 default: 'convert',
@@ -207,6 +212,26 @@ export class PdfToolkit implements INodeType {
                     },
                 ],
                 default: 'jsonSelect',
+            },
+            // Operations for Page Resource
+            {
+                displayName: 'Operation',
+                name: 'operation',
+                type: 'options',
+                noDataExpression: true,
+                displayOptions: {
+                    show: {
+                        resource: ['page'],
+                    },
+                },
+                options: [
+                    {
+                        name: 'Upload',
+                        value: 'upload',
+                        action: 'Upload HTML and get public URL',
+                    },
+                ],
+                default: 'upload',
             },
 
             // --- Inputs ---
@@ -629,6 +654,37 @@ export class PdfToolkit implements INodeType {
                 },
             },
 
+            // --- Page Properties ---
+            {
+                displayName: 'Page Name',
+                name: 'pageName',
+                type: 'string',
+                default: '',
+                required: true,
+                displayOptions: {
+                    show: {
+                        resource: ['page'],
+                    },
+                },
+                description: 'The name of the page to create.',
+            },
+            {
+                displayName: 'HTML Content',
+                name: 'htmlContent',
+                type: 'string',
+                typeOptions: {
+                    rows: 10,
+                },
+                default: '',
+                required: true,
+                displayOptions: {
+                    show: {
+                        resource: ['page'],
+                    },
+                },
+                description: 'HTML content to upload.',
+            },
+
             // Output Filename (PDF)
             {
                 displayName: 'Output Filename',
@@ -711,6 +767,8 @@ export class PdfToolkit implements INodeType {
                     result = await executeWeb(this, apiHelper, i, operation);
                 } else if (resource === 'data') {
                     result = await executeData(this, apiHelper, i, operation);
+                } else if (resource === 'page') {
+                    result = await executePage(this, apiHelper, i, operation);
                 } else {
                     throw new NodeOperationError(this.getNode(), `Unknown resource: ${resource}`, { itemIndex: i });
                 }
