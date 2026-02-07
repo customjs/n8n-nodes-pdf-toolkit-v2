@@ -226,9 +226,19 @@ export class PdfToolkit implements INodeType {
                 },
                 options: [
                     {
-                        name: 'Upload',
+                        name: 'Get App Pages',
+                        value: 'getAll',
+                        action: 'Get App Pages',
+                    },
+                    {
+                        name: 'Upload HTML and get public URL',
                         value: 'upload',
                         action: 'Upload HTML and get public URL',
+                    },
+                    {
+                        name: 'Update HTML Page',
+                        value: 'update',
+                        action: 'Update HTML Page',
                     },
                 ],
                 default: 'upload',
@@ -656,17 +666,45 @@ export class PdfToolkit implements INodeType {
 
             // --- Page Properties ---
             {
-                displayName: 'Page Name',
-                name: 'pageName',
+                displayName: 'Page ID',
+                name: 'pageId',
                 type: 'string',
                 default: '',
                 required: true,
                 displayOptions: {
                     show: {
                         resource: ['page'],
+                        operation: ['update'],
                     },
                 },
-                description: 'The name of the page to create.',
+                description: 'The ID of the page to update.',
+            },
+            {
+                displayName: 'Page Name',
+                name: 'pageName',
+                type: 'string',
+                default: '',
+                required: false,
+                displayOptions: {
+                    show: {
+                        resource: ['page'],
+                        operation: ['upload', 'update'],
+                    },
+                },
+                description: 'The name of the page.',
+            },
+            {
+                displayName: 'Slug',
+                name: 'slug',
+                type: 'string',
+                default: '',
+                displayOptions: {
+                    show: {
+                        resource: ['page'],
+                        operation: ['update'],
+                    },
+                },
+                description: 'Optional slug for the page.',
             },
             {
                 displayName: 'HTML Content',
@@ -680,6 +718,7 @@ export class PdfToolkit implements INodeType {
                 displayOptions: {
                     show: {
                         resource: ['page'],
+                        operation: ['upload', 'update'],
                     },
                 },
                 description: 'HTML content to upload.',

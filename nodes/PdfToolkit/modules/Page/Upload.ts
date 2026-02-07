@@ -6,7 +6,6 @@ export async function executeUpload(
     apiHelper: ApiHelper,
     itemIndex: number
 ): Promise<INodeExecutionData> {
-    const workspaceId = await apiHelper.getWorkspaceId();
     const name = executeFunctions.getNodeParameter('pageName', itemIndex) as string;
     const htmlContent = executeFunctions.getNodeParameter('htmlContent', itemIndex) as string;
 
@@ -15,7 +14,7 @@ export async function executeUpload(
         htmlContent,
     };
 
-    const responseData = await apiHelper.makePageRequest(workspaceId, body);
+    const responseData = await apiHelper.request('POST', 'https://api.app.customjs.io/pages/page/upload-html', body);
 
     return {
         json: responseData,
