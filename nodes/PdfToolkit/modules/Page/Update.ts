@@ -9,7 +9,7 @@ export async function executeUpdate(
     const pageId = executeFunctions.getNodeParameter('pageId', itemIndex) as string;
     const htmlContent = executeFunctions.getNodeParameter('htmlContent', itemIndex) as string;
     const name = executeFunctions.getNodeParameter('pageName', itemIndex) as string;
-    const slug = executeFunctions.getNodeParameter('slug', itemIndex) as string;
+
 
     const body: IDataObject = {
         htmlContent,
@@ -18,11 +18,14 @@ export async function executeUpdate(
     if (name) {
         body.name = name;
     }
-    if (slug) {
-        body.slug = slug;
-    }
+
 
     const responseData = await apiHelper.request('PUT', `https://api.app.customjs.io/pages/api/page/id/${pageId}/update-html`, body);
+
+    if (responseData.htmlFileUrl) {
+        responseData.htmlFileUrl = apiHelper.replaceDomain(responseData.htmlFileUrl);
+    }
+
 
     return {
         json: responseData,

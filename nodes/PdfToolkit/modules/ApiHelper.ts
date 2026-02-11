@@ -62,4 +62,13 @@ export class ApiHelper {
             options
         );
     }
+    replaceDomain(urlStr: string): string {
+        try {
+            const url = new URL(urlStr);
+            url.hostname = 'lp.customjs.space';
+            return url.toString();
+        } catch (error) {
+            return urlStr;
+        }
+    }
 }

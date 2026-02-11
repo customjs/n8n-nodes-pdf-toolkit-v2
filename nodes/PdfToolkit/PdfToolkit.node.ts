@@ -57,7 +57,7 @@ export class PdfToolkit implements INodeType {
                         value: 'data',
                     },
                     {
-                        name: 'Page',
+                        name: 'HTML Hosting',
                         value: 'page',
                     },
                 ],
@@ -226,12 +226,12 @@ export class PdfToolkit implements INodeType {
                 },
                 options: [
                     {
-                        name: 'Get App Pages',
+                        name: 'Get HTML Pages',
                         value: 'getAll',
                         action: 'Get App Pages',
                     },
                     {
-                        name: 'Upload HTML and get public URL',
+                        name: 'Host HTML Page',
                         value: 'upload',
                         action: 'Upload HTML and get public URL',
                     },
@@ -693,19 +693,7 @@ export class PdfToolkit implements INodeType {
                 },
                 description: 'The name of the page.',
             },
-            {
-                displayName: 'Slug',
-                name: 'slug',
-                type: 'string',
-                default: '',
-                displayOptions: {
-                    show: {
-                        resource: ['page'],
-                        operation: ['update'],
-                    },
-                },
-                description: 'Optional slug for the page.',
-            },
+
             {
                 displayName: 'HTML Content',
                 name: 'htmlContent',
