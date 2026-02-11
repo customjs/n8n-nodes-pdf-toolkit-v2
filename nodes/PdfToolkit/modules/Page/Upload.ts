@@ -16,11 +16,6 @@ export async function executeUpload(
 
     const responseData = await apiHelper.request('POST', 'https://api.app.customjs.io/pages/page/upload-html', body);
 
-    if (responseData.htmlFileUrl) {
-        responseData.htmlFileUrl = apiHelper.replaceDomain(responseData.htmlFileUrl);
-    }
-
-
     return {
         json: responseData,
         pairedItem: {

@@ -19,13 +19,7 @@ export async function executeUpdate(
         body.name = name;
     }
 
-
     const responseData = await apiHelper.request('PUT', `https://api.app.customjs.io/pages/api/page/id/${pageId}/update-html`, body);
-
-    if (responseData.htmlFileUrl) {
-        responseData.htmlFileUrl = apiHelper.replaceDomain(responseData.htmlFileUrl);
-    }
-
 
     return {
         json: responseData,
