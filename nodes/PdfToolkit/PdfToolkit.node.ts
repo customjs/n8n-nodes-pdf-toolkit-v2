@@ -228,17 +228,17 @@ export class PdfToolkit implements INodeType {
                     {
                         name: 'Get HTML Pages',
                         value: 'getAll',
-                        action: 'Get App Pages',
+                        action: 'Get HTML Pages',
                     },
                     {
                         name: 'Host HTML Page',
                         value: 'upload',
-                        action: 'Upload HTML and get public URL',
+                        action: 'Upload new HTML Page',
                     },
                     {
                         name: 'Update HTML Page',
                         value: 'update',
-                        action: 'Update HTML Page',
+                        action: 'Update existing HTML Page',
                     },
                 ],
                 default: 'upload',
