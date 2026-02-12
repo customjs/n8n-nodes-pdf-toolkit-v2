@@ -152,3 +152,11 @@ Add your Api Key and store securely
 - Configure your CustomJS API credentials.
 - Input your TOON data.
 - Execute the workflow to convert TOON to JSON format.
+
+### Host HTML Page node
+
+- Add the **Host HTML Page** node to your workflow.
+- Configure your CustomJS API credentials.
+- Input your HTML content.
+- Execute the workflow to host the HTML page.
+- You can then access the hosted page via the provided URL.
