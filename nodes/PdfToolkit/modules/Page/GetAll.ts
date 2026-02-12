@@ -5,13 +5,13 @@ export async function executeGetAll(
     executeFunctions: IExecuteFunctions,
     apiHelper: ApiHelper,
     itemIndex: number
-): Promise<INodeExecutionData> {
+): Promise<INodeExecutionData[]> {
     const responseData = await apiHelper.request('GET', 'https://api.app.customjs.io/pages/api/page', undefined, undefined, { 'customjs-origin': 'n8n/htmlPages' });
 
-    return {
-        json: responseData,
+    return responseData.map((item: any) => ({
+        json: item,
         pairedItem: {
             item: itemIndex,
         },
-    };
+    }));
 }

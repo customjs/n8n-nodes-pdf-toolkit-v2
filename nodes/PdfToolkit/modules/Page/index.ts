@@ -9,7 +9,7 @@ export async function executePage(
     apiHelper: ApiHelper,
     itemIndex: number,
     operation: string
-): Promise<INodeExecutionData> {
+): Promise<INodeExecutionData[] | INodeExecutionData> {
     switch (operation) {
         case 'upload':
             return executeUpload(executeFunctions, apiHelper, itemIndex);

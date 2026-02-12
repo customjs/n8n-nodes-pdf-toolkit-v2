@@ -785,7 +785,7 @@ export class PdfToolkit implements INodeType {
 
         for (let i = 0; i < items.length; i++) {
             try {
-                let result: INodeExecutionData;
+                let result: INodeExecutionData | INodeExecutionData[];
                 if (resource === 'convert') {
                     result = await executeConvert(this, apiHelper, i, operation);
                 } else if (resource === 'pdf') {
@@ -799,7 +799,12 @@ export class PdfToolkit implements INodeType {
                 } else {
                     throw new NodeOperationError(this.getNode(), `Unknown resource: ${resource}`, { itemIndex: i });
                 }
-                returnData.push(result);
+
+                if (Array.isArray(result)) {
+                    returnData.push(...result);
+                } else {
+                    returnData.push(result);
+                }
             } catch (error) {
                 if (this.continueOnFail()) {
                     returnData.push({ json: { error: (error as Error).message }, pairedItem: { item: i } });
