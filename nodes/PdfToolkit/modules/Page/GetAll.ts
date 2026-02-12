@@ -6,7 +6,7 @@ export async function executeGetAll(
     apiHelper: ApiHelper,
     itemIndex: number
 ): Promise<INodeExecutionData> {
-    const responseData = await apiHelper.request('GET', 'https://api.app.customjs.io/pages/api/page');
+    const responseData = await apiHelper.request('GET', 'https://api.app.customjs.io/pages/api/page', undefined, undefined, { 'customjs-origin': 'n8n/htmlPages' });
 
     return {
         json: responseData,

@@ -14,7 +14,7 @@ export async function executeUpload(
         htmlContent,
     };
 
-    const responseData = await apiHelper.request('POST', 'https://api.app.customjs.io/pages/page/upload-html', body);
+    const responseData = await apiHelper.request('POST', 'https://api.app.customjs.io/pages/page/upload-html', body, undefined, { 'customjs-origin': 'n8n/uploadHtml' });
 
     return {
         json: responseData,

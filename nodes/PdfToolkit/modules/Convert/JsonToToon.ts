@@ -14,6 +14,6 @@ export async function executeJsonToToon(
         returnBinary: 'false',
     };
 
-    const response = await apiHelper.makeRequest('make/jsonToToon', body, false, itemIndex);
+    const response = await apiHelper.makeRequest('n8n/jsonToToon', body, false, itemIndex);
     return { json: { toon: response }, pairedItem: { item: itemIndex } };
 }

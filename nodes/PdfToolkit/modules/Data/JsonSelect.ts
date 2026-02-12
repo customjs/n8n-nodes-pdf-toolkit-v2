@@ -15,6 +15,6 @@ export async function executeJsonSelect(
         returnBinary: 'false',
     };
 
-    const response = await apiHelper.makeRequest('make/jsonSelector', body, false, itemIndex);
+    const response = await apiHelper.makeRequest('n8n/jsonSelector', body, false, itemIndex);
     return { json: { result: response }, pairedItem: { item: itemIndex } };
 }

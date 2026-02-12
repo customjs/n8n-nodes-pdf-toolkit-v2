@@ -19,7 +19,7 @@ export async function executeUpdate(
         body.name = name;
     }
 
-    const responseData = await apiHelper.request('PUT', `https://api.app.customjs.io/pages/api/page/id/${pageId}/update-html`, body);
+    const responseData = await apiHelper.request('PUT', `https://api.app.customjs.io/pages/api/page/id/${pageId}/update-html`, body, undefined, { 'customjs-origin': 'n8n/updateHtml' });
 
     return {
         json: responseData,
