@@ -26,5 +26,10 @@ export async function executePdfToText(
     }
 
     const response = await apiHelper.makeRequest('n8n/pdfToText', body, false, itemIndex);
-    return { json: response, pairedItem: { item: itemIndex } };
+    return {
+        json: {
+            output: response.toString(),
+        },
+        pairedItem: { item: itemIndex }
+    };
 }

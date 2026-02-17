@@ -48,7 +48,7 @@ export async function executeMerge(
 
     const binaryData = await executeFunctions.helpers.prepareBinaryData(response, outputFilename);
     return {
-        json: item.json,
+        json: {},
         binary: { data: binaryData },
         pairedItem: { item: itemIndex }
     };

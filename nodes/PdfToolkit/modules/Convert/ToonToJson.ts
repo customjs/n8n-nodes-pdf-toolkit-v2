@@ -15,5 +15,5 @@ export async function executeToonToJson(
     };
 
     const response = await apiHelper.makeRequest('n8n/toonToJson', body, false, itemIndex);
-    return { json: response, pairedItem: { item: itemIndex } };
+    return { json: { json: response }, pairedItem: { item: itemIndex } };
 }

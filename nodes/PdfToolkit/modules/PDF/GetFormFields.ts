@@ -20,5 +20,5 @@ export async function executeGetFormFields(
     };
 
     const response = await apiHelper.makeRequest('n8n/getFormFieldNames', body, false, itemIndex);
-    return { json: response, pairedItem: { item: itemIndex } };
+    return { json: { output: response }, pairedItem: { item: itemIndex } };
 }
