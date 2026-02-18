@@ -664,6 +664,36 @@ export class PdfToolkit implements INodeType {
                 },
             },
 
+            // HTML to PDF Properties
+            {
+                displayName: 'PDF Page Width (mm)',
+                name: 'pdfWidthMm',
+                type: 'number',
+                default: 210,
+                required: false,
+                displayOptions: {
+                    show: {
+                        resource: ['convert'],
+                        operation: ['htmlToPdf'],
+                    },
+                },
+                description: 'Width of the PDF page in millimeters.',
+            },
+            {
+                displayName: 'PDF Page Height (mm)',
+                name: 'pdfHeightMm',
+                type: 'number',
+                default: 297,
+                required: false,
+                displayOptions: {
+                    show: {
+                        resource: ['convert'],
+                        operation: ['htmlToPdf'],
+                    },
+                },
+                description: 'Height of the PDF page in millimeters.',
+            },
+
             // --- Page Properties ---
             {
                 displayName: 'Page ID',
