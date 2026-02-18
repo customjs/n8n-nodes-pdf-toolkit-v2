@@ -15,5 +15,5 @@ export async function executeSslCheck(
     };
 
     const response = await apiHelper.makeRequest('n8n/sslchecker', body, false, itemIndex);
-    return { json: response, pairedItem: { item: itemIndex } };
+    return { json: { output: response }, pairedItem: { item: itemIndex } };
 }

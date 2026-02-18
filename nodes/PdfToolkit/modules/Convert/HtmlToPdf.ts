@@ -8,9 +8,12 @@ export async function executeHtmlToPdf(
 ): Promise<INodeExecutionData> {
     const item = executeFunctions.getInputData()[itemIndex];
     const html = executeFunctions.getNodeParameter('html', itemIndex) as string;
+    const pdfWidthMm = executeFunctions.getNodeParameter('pdfWidthMm', itemIndex, 210) as number;
+    const pdfHeightMm = executeFunctions.getNodeParameter('pdfHeightMm', itemIndex, 297) as number;
+
     const body: any = {
         input: html,
-        code: "const { HTML2PDF } = require('./utils'); return HTML2PDF(input)",
+        code: `const { HTML2PDF } = require('./utils'); return HTML2PDF(input, {"pdfWidthMm": ${pdfWidthMm}, "pdfHeightMm": ${pdfHeightMm} })`,
         returnBinary: 'true',
     };
 

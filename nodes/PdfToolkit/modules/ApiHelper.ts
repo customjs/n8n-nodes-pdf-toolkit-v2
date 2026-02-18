@@ -37,4 +37,30 @@ export class ApiHelper {
             options
         );
     }
+
+    async request(
+        method: string,
+        url: string,
+        body?: IDataObject,
+        qs?: IDataObject,
+        headers: IDataObject = {},
+        option: IDataObject = {},
+    ): Promise<any> {
+        const options: any = {
+            url,
+            method,
+            body,
+            qs,
+            headers,
+            json: true,
+            ...option,
+        };
+
+        return this.executeFunctions.helpers.httpRequestWithAuthentication.call(
+            this.executeFunctions,
+            'customJsApi',
+            options
+        );
+    }
+
 }

@@ -19,6 +19,6 @@ export async function executeRegex(
         returnBinary: 'false',
     };
 
-    const response = await apiHelper.makeRequest('make/regexTool', body, false, itemIndex);
+    const response = await apiHelper.makeRequest('n8n/regexTool', body, false, itemIndex);
     return { json: { result: response }, pairedItem: { item: itemIndex } };
 }

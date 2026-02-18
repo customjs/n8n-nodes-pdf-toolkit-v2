@@ -12,6 +12,7 @@ import { executeConvert } from './modules/Convert';
 import { executePDF } from './modules/PDF';
 import { executeWeb } from './modules/Web';
 import { executeData } from './modules/Data';
+import { executePage } from './modules/Page';
 
 export class PdfToolkit implements INodeType {
     description: INodeTypeDescription = {
@@ -54,6 +55,10 @@ export class PdfToolkit implements INodeType {
                     {
                         name: 'Data',
                         value: 'data',
+                    },
+                    {
+                        name: 'HTML Hosting',
+                        value: 'page',
                     },
                 ],
                 default: 'convert',
@@ -207,6 +212,36 @@ export class PdfToolkit implements INodeType {
                     },
                 ],
                 default: 'jsonSelect',
+            },
+            // Operations for Page Resource
+            {
+                displayName: 'Operation',
+                name: 'operation',
+                type: 'options',
+                noDataExpression: true,
+                displayOptions: {
+                    show: {
+                        resource: ['page'],
+                    },
+                },
+                options: [
+                    {
+                        name: 'Get HTML Pages',
+                        value: 'getAll',
+                        action: 'Get HTML Pages',
+                    },
+                    {
+                        name: 'Host HTML Page',
+                        value: 'upload',
+                        action: 'Upload new HTML Page',
+                    },
+                    {
+                        name: 'Update HTML Page',
+                        value: 'update',
+                        action: 'Update existing HTML Page',
+                    },
+                ],
+                default: 'upload',
             },
 
             // --- Inputs ---
@@ -629,6 +664,84 @@ export class PdfToolkit implements INodeType {
                 },
             },
 
+            // HTML to PDF Properties
+            {
+                displayName: 'PDF Page Width (mm)',
+                name: 'pdfWidthMm',
+                type: 'number',
+                default: 210,
+                required: false,
+                displayOptions: {
+                    show: {
+                        resource: ['convert'],
+                        operation: ['htmlToPdf'],
+                    },
+                },
+                description: 'Width of the PDF page in millimeters.',
+            },
+            {
+                displayName: 'PDF Page Height (mm)',
+                name: 'pdfHeightMm',
+                type: 'number',
+                default: 297,
+                required: false,
+                displayOptions: {
+                    show: {
+                        resource: ['convert'],
+                        operation: ['htmlToPdf'],
+                    },
+                },
+                description: 'Height of the PDF page in millimeters.',
+            },
+
+            // --- Page Properties ---
+            {
+                displayName: 'Page ID',
+                name: 'pageId',
+                type: 'string',
+                default: '',
+                required: true,
+                displayOptions: {
+                    show: {
+                        resource: ['page'],
+                        operation: ['update'],
+                    },
+                },
+                description: 'The ID of the page to update.',
+            },
+            {
+                displayName: 'Page Name',
+                name: 'pageName',
+                type: 'string',
+                default: '',
+                required: false,
+                displayOptions: {
+                    show: {
+                        resource: ['page'],
+                        operation: ['upload', 'update'],
+                    },
+                },
+                description: 'The name of the page.',
+            },
+
+            {
+                displayName: 'HTML Content',
+                name: 'htmlContent',
+                type: 'string',
+                typeOptions: {
+                    rows: 10,
+                },
+                default: '',
+                required: true,
+                displayOptions: {
+                    show: {
+                        resource: ['page'],
+                        operation: ['upload', 'update'],
+                    },
+                },
+                description: 'HTML content to upload.',
+            },
+
             // Output Filename (PDF)
             {
                 displayName: 'Output Filename',
@@ -702,7 +815,7 @@ export class PdfToolkit implements INodeType {
 
         for (let i = 0; i < items.length; i++) {
             try {
-                let result: INodeExecutionData;
+                let result: INodeExecutionData | INodeExecutionData[];
                 if (resource === 'convert') {
                     result = await executeConvert(this, apiHelper, i, operation);
                 } else if (resource === 'pdf') {
@@ -711,10 +824,17 @@ export class PdfToolkit implements INodeType {
                     result = await executeWeb(this, apiHelper, i, operation);
                 } else if (resource === 'data') {
                     result = await executeData(this, apiHelper, i, operation);
+                } else if (resource === 'page') {
+                    result = await executePage(this, apiHelper, i, operation);
                 } else {
                     throw new NodeOperationError(this.getNode(), `Unknown resource: ${resource}`, { itemIndex: i });
                 }
-                returnData.push(result);
+
+                if (Array.isArray(result)) {
+                    returnData.push(...result);
+                } else {
+                    returnData.push(result);
+                }
             } catch (error) {
                 if (this.continueOnFail()) {
                     returnData.push({ json: { error: (error as Error).message }, pairedItem: { item: i } });
