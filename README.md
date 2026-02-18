@@ -1,6 +1,6 @@
 ![Banner image](https://user-images.githubusercontent.com/10284570/173569848-c624317f-42b1-45a6-ab09-f0ea3c247648.png)
 
-# @custom-js/n8n-nodes-pdf-toolkit
+# @custom-js/n8n-nodes-pdf-toolkit-v2
 
 This is an n8n community node. It lets interact with official API of [customJS API](https://www.customjs.space/)
 
