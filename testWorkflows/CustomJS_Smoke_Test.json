@@ -505,6 +505,28 @@
           "name": "CustomJS account"
         }
       }
+    },
+    {
+      "parameters": {
+        "operation": "htmlToPdf",
+        "html": "<h1>Hello World</h1>",
+        "pdfWidthMm": 150,
+        "pdfHeightMm": 130
+      },
+      "type": "CUSTOM.pdfToolkit",
+      "typeVersion": 1,
+      "position": [
+        0,
+        992
+      ],
+      "id": "fb98734d-9d48-49fb-bc1b-844c518ba288",
+      "name": "HTML to PDF1",
+      "credentials": {
+        "customJsApi": {
+          "id": "BFGbk0a71fKWY967",
+          "name": "CustomJS account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -580,6 +602,11 @@
           },
           {
             "node": "Get HTML Pages",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTML to PDF1",
             "type": "main",
             "index": 0
           }
@@ -701,9 +728,9 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "f4d80158-2671-4915-9b16-989aff376087",
+  "versionId": "559b8a04-206a-4680-a3f9-d7115c19ffad",
   "meta": {
-    "instanceId": "875b48a2e9e1bacd5b201e7166656b3178ed6b0733718b34436d388cd34ebc3e",
+    "instanceId": "0fb682f5b152480a1894955916cfe3b85364464d120436309f64e6765ab90ff1",
     "templateCredsSetupCompleted": true
   },
   "id": "7bx7OktEc4mWjzyS",
