@@ -240,6 +240,11 @@ export class PdfToolkit implements INodeType {
                         value: 'update',
                         action: 'Update existing HTML Page',
                     },
+                    {
+                        name: 'Upsert HTML Page',
+                        value: 'upsert',
+                        action: 'Upsert HTML Page',
+                    },
                 ],
                 default: 'upload',
             },
@@ -718,7 +723,7 @@ export class PdfToolkit implements INodeType {
                 displayOptions: {
                     show: {
                         resource: ['page'],
-                        operation: ['upload', 'update'],
+                        operation: ['upload', 'update', 'upsert'],
                     },
                 },
                 description: 'The name of the page.',
@@ -736,7 +741,7 @@ export class PdfToolkit implements INodeType {
                 displayOptions: {
                     show: {
                         resource: ['page'],
-                        operation: ['upload', 'update'],
+                        operation: ['upload', 'update', 'upsert'],
                     },
                 },
                 description: 'HTML content to upload.',
