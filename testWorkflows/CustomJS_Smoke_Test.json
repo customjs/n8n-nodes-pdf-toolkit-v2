@@ -527,6 +527,28 @@
           "name": "CustomJS account"
         }
       }
+    },
+    {
+      "parameters": {
+        "resource": "page",
+        "operation": "upsert",
+        "pageName": "Test 51",
+        "htmlContent": "<h1>Hello World 2</h1>"
+      },
+      "type": "CUSTOM.pdfToolkit",
+      "typeVersion": 1,
+      "position": [
+        -528,
+        2544
+      ],
+      "id": "1fa40339-cc4e-4cc4-84aa-228e1e13a22c",
+      "name": "Upsert HTML Page",
+      "credentials": {
+        "customJsApi": {
+          "id": "BFGbk0a71fKWY967",
+          "name": "CustomJS account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -607,6 +629,11 @@
           },
           {
             "node": "HTML to PDF1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Upsert HTML Page",
             "type": "main",
             "index": 0
           }
@@ -728,9 +755,9 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "559b8a04-206a-4680-a3f9-d7115c19ffad",
+  "versionId": "508ceb43-456b-4e62-80d3-c54d90d67316",
   "meta": {
-    "instanceId": "0fb682f5b152480a1894955916cfe3b85364464d120436309f64e6765ab90ff1",
+    "instanceId": "b8910cb1c60a6ad5efd31d8728d14fced8e6aa982884148fc66455dfbe16fd9b",
     "templateCredsSetupCompleted": true
   },
   "id": "7bx7OktEc4mWjzyS",
