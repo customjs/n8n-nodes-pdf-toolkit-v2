@@ -28,7 +28,8 @@
       "dist/credentials/CustomJsApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/PdfToolkit/PdfToolkit.node.js"
+      "dist/nodes/PdfToolkit/PdfToolkit.node.js",
+      "dist/nodes/MailHookTrigger/MailHookTrigger.node.js"
     ]
   },
   "devDependencies": {
