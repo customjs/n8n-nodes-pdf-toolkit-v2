@@ -65,18 +65,6 @@ export class MailHookTrigger implements INodeType {
 				default: 'multipart/form-data',
 				description: 'Format for webhook delivery sent by CustomJS',
 			},
-			{
-				displayName: 'CustomJS Mail Address',
-				name: 'notice',
-				type: 'notice' as any,
-				default: '',
-				displayOptions: {
-					show: {
-						'@version': [{ _cnd: { exists: true } }] as any,
-					},
-				},
-				description: 'After activating the workflow for the first time, check your CustomJS dashboard or the output of the first execution to see the assigned email address.',
-			},
 		],
 	};
 
@@ -84,9 +72,8 @@ export class MailHookTrigger implements INodeType {
 		default: {
 			async checkExists(this: IHookFunctions): Promise<boolean> {
 				const webhookData = this.getWorkflowStaticData('node');
-				
+
 				if (webhookData.mailHookId === undefined) {
-					// No mail hook ID saved, so it doesn't exist
 					return false;
 				}
 
@@ -104,10 +91,10 @@ export class MailHookTrigger implements INodeType {
 					};
 
 					await this.helpers.request(options);
-					return true; // Exists
+					return true;
 				} catch (error: any) {
 					if (error.response && error.response.status === 404) {
-						return false; // Does not exist
+						return false;
 					}
 					throw error;
 				}
@@ -153,7 +140,7 @@ export class MailHookTrigger implements INodeType {
 
 			async delete(this: IHookFunctions): Promise<boolean> {
 				const webhookData = this.getWorkflowStaticData('node');
-				
+
 				if (!webhookData.mailHookId) {
 					return false;
 				}
@@ -190,25 +177,14 @@ export class MailHookTrigger implements INodeType {
 	async webhook(this: IWebhookFunctions): Promise<IWebhookResponseData> {
 		const req = this.getRequestObject();
 		const bodyData = this.getBodyData();
-		
-		// Map CustomJS webhook payload (JSON or multipart) to the output of this node
-		
-		let outputData: IDataObject = {};
-		
-		if (req.headers['content-type']?.includes('multipart/form-data')) {
-            // Because n8n handles multipart requests internally and parses fields into body and files into files
-            // Wait, we need to carefully map what n8n parses.
-            // When n8n receives multipart, it parses form fields into req.body and files into req.files.
-            // Let's just output the whole bodyData.
-            outputData = { ...bodyData };
-            
-            // If we have files in n8n, this is represented differently.
-            // However, by default, if we just output bodyData, the user gets all the structured data.
-        } else {
-            // It's probably application/json
-            outputData = { ...bodyData };
-        }
 
+		let outputData: IDataObject = {};
+
+		if (req.headers['content-type']?.includes('multipart/form-data')) {
+			outputData = { ...bodyData };
+		} else {
+			outputData = { ...bodyData };
+		}
 		return {
 			workflowData: [
 				[
