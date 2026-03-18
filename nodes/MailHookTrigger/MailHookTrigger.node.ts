@@ -7,6 +7,8 @@ import {
 	IWebhookResponseData,
 	NodeConnectionType,
 	NodeApiError,
+	ILoadOptionsFunctions,
+	INodePropertyOptions,
 } from 'n8n-workflow';
 
 export class MailHookTrigger implements INodeType {
@@ -38,14 +40,68 @@ export class MailHookTrigger implements INodeType {
 		],
 		properties: [
 			{
+				displayName: 'Mode',
+				name: 'mode',
+				type: 'options',
+				options: [
+					{
+						name: 'Create New Hook',
+						value: 'new',
+						description: 'Create a new mail hook and get a new email address',
+					},
+					{
+						name: 'Use Existing Hook',
+						value: 'existing',
+						description: 'Connect to an existing mail hook by selecting from the list',
+					},
+				],
+				default: 'existing',
+				noDataExpression: true,
+			},
+			// --- CREATE NEW MODE ---
+			{
 				displayName: 'Mail Hook Name',
 				name: 'name',
 				type: 'string',
 				default: '',
-				placeholder: 'My Mail Hook',
-				description: 'A descriptive name for your mail hook in CustomJS',
+				displayOptions: {
+					show: {
+						mode: ['new'],
+					},
+				},
+				placeholder: 'e.g. Invoice Emails',
+				description: 'A name for your new mail hook. A unique email address will be generated for it.',
 				required: true,
 			},
+			{
+				displayName: '📧 Once you activate this workflow, your unique email address will be created and visible in the <a href="https://app.customjs.io" target="_blank">CustomJS dashboard</a> under <strong>Mail Hooks</strong>.',
+				name: 'createNotice',
+				type: 'notice',
+				default: '',
+				displayOptions: {
+					show: {
+						mode: ['new'],
+					},
+				},
+			},
+			// --- EXISTING MODE ---
+			{
+				displayName: 'Mail Hook',
+				name: 'mailHookId',
+				type: 'options',
+				displayOptions: {
+					show: {
+						mode: ['existing'],
+					},
+				},
+				typeOptions: {
+					loadOptionsMethod: 'getMailHooks',
+				},
+				default: '',
+				placeholder: 'Select a mail hook...',
+				description: 'Select an existing mail hook. The email address is shown next to the name.',
+			},
+			// --- SHARED ---
 			{
 				displayName: 'Webhook Format',
 				name: 'webhookFormat',
@@ -66,6 +122,28 @@ export class MailHookTrigger implements INodeType {
 				description: 'Format for webhook delivery sent by CustomJS',
 			},
 		],
+	};
+
+	methods = {
+		loadOptions: {
+			async getMailHooks(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+				const credentials = await this.getCredentials('customJsApi');
+				const options: any = {
+					method: 'GET',
+					url: 'https://api.app.customjs.io/mail-hook/api/mail-hook',
+					headers: {
+						'X-Api-Key': credentials.apiKey as string,
+					},
+					json: true,
+				};
+
+				const response = await this.helpers.request(options);
+				return response.map((hook: any) => ({
+					name: `${hook.name}  —  ${hook.emailAddress}`,
+					value: hook.mailHookId,
+				}));
+			},
+		},
 	};
 
 	webhookMethods = {
@@ -103,43 +181,57 @@ export class MailHookTrigger implements INodeType {
 			async create(this: IHookFunctions): Promise<boolean> {
 				const webhookData = this.getWorkflowStaticData('node');
 				const webhookUrl = this.getNodeWebhookUrl('default') as string;
-
-				const name = this.getNodeParameter('name') as string;
+				const mode = this.getNodeParameter('mode') as string;
 				const webhookFormat = this.getNodeParameter('webhookFormat') as string;
-
 				const credentials = await this.getCredentials('customJsApi');
 
-				const options: any = {
-					method: 'POST',
-					url: 'https://api.app.customjs.io/mail-hook/api/mail-hook',
-					headers: {
-						'X-Api-Key': credentials.apiKey as string,
-						'Content-Type': 'application/json',
-					},
-					body: {
-						name,
-						webhookUrl,
-						webhookFormat,
-					},
-					json: true,
-				};
+				let response: any;
 
-				try {
-					const response = await this.helpers.request(options);
-
-					// Save the hook IDs and email address
-					webhookData.mailHookId = response.mailHookId;
-					webhookData.emailAddress = response.emailAddress;
-
-					return true;
-				} catch (error: any) {
-					console.error('Error creating CustomJS mail hook:', error);
-					throw new NodeApiError(this.getNode(), error as any);
+				if (mode === 'new') {
+					const name = this.getNodeParameter('name') as string;
+					const options: any = {
+						method: 'POST',
+						url: 'https://api.app.customjs.io/mail-hook/api/mail-hook',
+						headers: {
+							'X-Api-Key': credentials.apiKey as string,
+							'Content-Type': 'application/json',
+						},
+						body: {
+							name,
+							webhookUrl,
+							webhookFormat,
+						},
+						json: true,
+					};
+					response = await this.helpers.request(options);
+				} else {
+					const mailHookId = this.getNodeParameter('mailHookId') as string;
+					const options: any = {
+						method: 'PUT',
+						url: `https://api.app.customjs.io/mail-hook/api/mail-hook/id/${mailHookId}`,
+						headers: {
+							'X-Api-Key': credentials.apiKey as string,
+							'Content-Type': 'application/json',
+						},
+						body: {
+							webhookUrl,
+							webhookFormat,
+						},
+						json: true,
+					};
+					response = await this.helpers.request(options);
 				}
+
+				webhookData.mailHookId = response.mailHookId;
+				webhookData.emailAddress = response.emailAddress;
+				webhookData.mode = mode;
+
+				return true;
 			},
 
 			async delete(this: IHookFunctions): Promise<boolean> {
 				const webhookData = this.getWorkflowStaticData('node');
+				const mode = webhookData.mode as string;
 
 				if (!webhookData.mailHookId) {
 					return false;
@@ -148,6 +240,29 @@ export class MailHookTrigger implements INodeType {
 				const credentials = await this.getCredentials('customJsApi');
 				const mailHookId = webhookData.mailHookId as string;
 
+				// For existing hooks: just clear the webhookUrl, don't delete
+				if (mode === 'existing') {
+					try {
+						const options: any = {
+							method: 'PUT',
+							url: `https://api.app.customjs.io/mail-hook/api/mail-hook/id/${mailHookId}`,
+							headers: {
+								'X-Api-Key': credentials.apiKey as string,
+								'Content-Type': 'application/json',
+							},
+							body: { webhookUrl: '' },
+							json: true,
+						};
+						await this.helpers.request(options);
+					} catch (error) {
+						// Ignore errors during cleanup
+					}
+					delete webhookData.mailHookId;
+					delete webhookData.emailAddress;
+					return true;
+				}
+
+				// For new hooks: delete the hook entirely
 				const options: any = {
 					method: 'DELETE',
 					url: `https://api.app.customjs.io/mail-hook/api/mail-hook/id/${mailHookId}`,
