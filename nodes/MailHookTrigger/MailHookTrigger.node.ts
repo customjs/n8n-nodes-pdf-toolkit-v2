@@ -1,15 +1,52 @@
 import {
 	IHookFunctions,
 	IWebhookFunctions,
+	ILoadOptionsFunctions,
 	IDataObject,
 	INodeType,
 	INodeTypeDescription,
 	IWebhookResponseData,
 	NodeConnectionType,
 	NodeApiError,
-	ILoadOptionsFunctions,
-	INodePropertyOptions,
+	IAllExecuteFunctions,
+	IHttpRequestMethods,
+	INodeListSearchResult,
 } from 'n8n-workflow';
+
+const BASE_URL = 'https://api.app.customjs.io/mail-hook/api/mail-hook';
+
+interface IMailHook {
+	mailHookId: string;
+	name: string;
+	emailAddress: string;
+	webhookUrl?: string;
+	webhookFormat?: string;
+}
+
+/**
+ * Helper to make authenticated requests to the CustomJS API.
+ */
+async function apiRequest(
+	this: IAllExecuteFunctions,
+	method: IHttpRequestMethods,
+	path: string,
+	body: IDataObject = {},
+): Promise<any> {
+	const credentials = await this.getCredentials('customJsApi');
+	const options = {
+		method,
+		url: `${BASE_URL}${path}`,
+		headers: { 'X-Api-Key': credentials.apiKey as string },
+		body,
+		json: true,
+	};
+
+	try {
+		return await this.helpers.request(options);
+	} catch (error: any) {
+		throw new NodeApiError(this.getNode(), error as any);
+	}
+}
 
 export class MailHookTrigger implements INodeType {
 	description: INodeTypeDescription = {
@@ -18,7 +55,7 @@ export class MailHookTrigger implements INodeType {
 		icon: 'file:customJs.svg',
 		group: ['trigger'],
 		version: 1,
-		description: 'Triggers the workflow when an email is received via CustomJS.',
+		description: 'Triggers the workflow when an email is received at a generated CustomJS email address.',
 		defaults: {
 			name: 'Mail Trigger',
 		},
@@ -40,68 +77,14 @@ export class MailHookTrigger implements INodeType {
 		],
 		properties: [
 			{
-				displayName: 'Mode',
-				name: 'mode',
-				type: 'options',
-				options: [
-					{
-						name: 'Create New Hook',
-						value: 'new',
-						description: 'Create a new mail hook and get a new email address',
-					},
-					{
-						name: 'Use Existing Hook',
-						value: 'existing',
-						description: 'Connect to an existing mail hook by selecting from the list',
-					},
-				],
-				default: 'existing',
-				noDataExpression: true,
-			},
-			// --- CREATE NEW MODE ---
-			{
 				displayName: 'Mail Hook Name',
 				name: 'name',
 				type: 'string',
 				default: '',
-				displayOptions: {
-					show: {
-						mode: ['new'],
-					},
-				},
-				placeholder: 'e.g. Invoice Emails',
-				description: 'A name for your new mail hook. A unique email address will be generated for it.',
-				required: true,
+				placeholder: 'e.g. Customer Support Emails',
+				description: 'A descriptive name for this mail hook. Used to find or create it in CustomJS.',
+				required: false,
 			},
-			{
-				displayName: '📧 Once you activate this workflow, your unique email address will be created and visible in the <a href="https://app.customjs.io" target="_blank">CustomJS dashboard</a> under <strong>Mail Hooks</strong>.',
-				name: 'createNotice',
-				type: 'notice',
-				default: '',
-				displayOptions: {
-					show: {
-						mode: ['new'],
-					},
-				},
-			},
-			// --- EXISTING MODE ---
-			{
-				displayName: 'Mail Hook',
-				name: 'mailHookId',
-				type: 'options',
-				displayOptions: {
-					show: {
-						mode: ['existing'],
-					},
-				},
-				typeOptions: {
-					loadOptionsMethod: 'getMailHooks',
-				},
-				default: '',
-				placeholder: 'Select a mail hook...',
-				description: 'Select an existing mail hook. The email address is shown next to the name.',
-			},
-			// --- SHARED ---
 			{
 				displayName: 'Webhook Format',
 				name: 'webhookFormat',
@@ -119,195 +102,153 @@ export class MailHookTrigger implements INodeType {
 					},
 				],
 				default: 'multipart/form-data',
-				description: 'Format for webhook delivery sent by CustomJS',
+				description: 'Format for webhook delivery sent by CustomJS.',
+			},
+			{
+				displayName: 'Select Mail Hook',
+				name: 'mailHookId',
+				type: 'resourceLocator',
+				default: { mode: 'list', value: '' },
+				description: 'The CustomJS Mail Hook to use.',
+				modes: [
+					{
+						displayName: 'From List',
+						name: 'list',
+						type: 'list',
+						placeholder: 'Select a Mail Hook...',
+						typeOptions: {
+							searchListMethod: 'mailHookSearch',
+						},
+					},
+				],
 			},
 		],
 	};
 
-	methods = {
-		loadOptions: {
-			async getMailHooks(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-				const credentials = await this.getCredentials('customJsApi');
-				const options: any = {
-					method: 'GET',
-					url: 'https://api.app.customjs.io/mail-hook/api/mail-hook',
-					headers: {
-						'X-Api-Key': credentials.apiKey as string,
-					},
-					json: true,
-				};
+	// ─── List Search Methods ─────────────────────────────────────────────────────
 
-				const response = await this.helpers.request(options);
-				return response.map((hook: any) => ({
-					name: `${hook.name}  —  ${hook.emailAddress}`,
-					value: hook.mailHookId,
+	methods = {
+		listSearch: {
+			/**
+			 * Finds and lists all mail hooks from the account.
+			 * Also handles find-or-create logic based on the 'Mail Hook Name' parameter.
+			 */
+			async mailHookSearch(this: ILoadOptionsFunctions, filter?: string): Promise<INodeListSearchResult> {
+				const nameParameter = this.getCurrentNodeParameter('name') as string;
+
+				// 1. Fetch ALL hooks from the account
+				const hooks: IMailHook[] = await apiRequest.call(this as any, 'GET', '');
+
+				// 2. Prepare results list - combining both to show when selected
+				const results: Array<{ name: string; value: string; description: string }> = hooks.map((h) => ({
+					name: `${h.name} (${h.emailAddress})`,
+					value: h.emailAddress,
+					description: h.emailAddress,
 				}));
+
+				// 3. Filter if user is typing in the resource locator search box
+				let filteredResults = results;
+				if (filter && filter.trim() !== '') {
+					filteredResults = results.filter((r) => r.name.toLowerCase().includes(filter.toLowerCase()));
+				}
+
+				// 4. Special Case: If a Name is provided in the 'Mail Hook Name' field and it doesn't exist yet,
+				// we offer to create it immediately if it's not already in our list.
+				const nameToFind = nameParameter?.trim() || '';
+				const alreadyExists = hooks.some((h) => h.name.toLowerCase() === nameToFind.toLowerCase());
+
+				if (nameToFind !== '' && !alreadyExists) {
+					// Auto-create hook if it doesn't exist and add to top of list
+					const webhookFormat = (this.getCurrentNodeParameter('webhookFormat') as string) || 'multipart/form-data';
+
+					const created: IMailHook = await apiRequest.call(this as any, 'POST', '', {
+						name: nameToFind,
+						webhookUrl: 'https://placeholder.customjs.io/pending-activation',
+						webhookFormat,
+					});
+
+					filteredResults.unshift({
+						name: `${created.name} (${created.emailAddress})`,
+						value: created.emailAddress,
+						description: created.emailAddress,
+					});
+				}
+
+				return {
+					results: filteredResults,
+				};
 			},
 		},
 	};
+
+	// ─── Webhook Lifecycle ───────────────────────────────────────────────────────
 
 	webhookMethods = {
 		default: {
+			/**
+			 * We return false here to force n8n to always call the 'create' method on activation.
+			 * This allows us to sync the real webhook URL to CustomJS every time.
+			 */
 			async checkExists(this: IHookFunctions): Promise<boolean> {
-				const webhookData = this.getWorkflowStaticData('node');
-
-				if (webhookData.mailHookId === undefined) {
-					return false;
-				}
-
-				try {
-					const credentials = await this.getCredentials('customJsApi');
-					const mailHookId = webhookData.mailHookId as string;
-
-					const options: any = {
-						method: 'GET',
-						url: `https://api.app.customjs.io/mail-hook/api/mail-hook/id/${mailHookId}`,
-						headers: {
-							'X-Api-Key': credentials.apiKey as string,
-						},
-						json: true,
-					};
-
-					await this.helpers.request(options);
-					return true;
-				} catch (error: any) {
-					if (error.response && error.response.status === 404) {
-						return false;
-					}
-					throw error;
-				}
+				return false;
 			},
 
+			/**
+			 * Called on workflow activation or when clicking 'Listen for Test Event'.
+			 * Handles both creating a new hook or updating an existing one with the real URL.
+			 */
 			async create(this: IHookFunctions): Promise<boolean> {
 				const webhookData = this.getWorkflowStaticData('node');
 				const webhookUrl = this.getNodeWebhookUrl('default') as string;
-				const mode = this.getNodeParameter('mode') as string;
+				const mailHookParam = this.getNodeParameter('mailHookId') as any;
+				const emailAddress = typeof mailHookParam === 'object' ? mailHookParam.value : mailHookParam;
+				const name = this.getNodeParameter('name') as string;
 				const webhookFormat = this.getNodeParameter('webhookFormat') as string;
-				const credentials = await this.getCredentials('customJsApi');
 
-				let response: any;
+				if (!emailAddress || emailAddress.trim() === '') return false;
 
-				if (mode === 'new') {
-					const name = this.getNodeParameter('name') as string;
-					const options: any = {
-						method: 'POST',
-						url: 'https://api.app.customjs.io/mail-hook/api/mail-hook',
-						headers: {
-							'X-Api-Key': credentials.apiKey as string,
-							'Content-Type': 'application/json',
-						},
-						body: {
-							name,
-							webhookUrl,
-							webhookFormat,
-						},
-						json: true,
-					};
-					response = await this.helpers.request(options);
-				} else {
-					const mailHookId = this.getNodeParameter('mailHookId') as string;
-					const options: any = {
-						method: 'PUT',
-						url: `https://api.app.customjs.io/mail-hook/api/mail-hook/id/${mailHookId}`,
-						headers: {
-							'X-Api-Key': credentials.apiKey as string,
-							'Content-Type': 'application/json',
-						},
-						body: {
-							webhookUrl,
-							webhookFormat,
-						},
-						json: true,
-					};
-					response = await this.helpers.request(options);
+				// --- Find mailHookId by email from the list ---
+				const hooks: IMailHook[] = await apiRequest.call(this as any, 'GET', '');
+				const match = hooks.find((h) => h.emailAddress === emailAddress);
+
+				if (!match) {
+					throw new NodeApiError(this.getNode(), {
+						message: `Mail hook for email ${emailAddress} not found in CustomJS account.`,
+					} as any);
 				}
+
+				const mailHookId = match.mailHookId;
+
+				const response: IMailHook = await apiRequest.call(this as any, 'PUT', `/id/${mailHookId}`, {
+					name: name || match.name,
+					webhookUrl,
+					webhookFormat,
+					status: 'active',
+				});
 
 				webhookData.mailHookId = response.mailHookId;
 				webhookData.emailAddress = response.emailAddress;
-				webhookData.mode = mode;
-
 				return true;
 			},
 
+			/**
+			 * Called on workflow deactivation. Deletes the mail hook.
+			 */
 			async delete(this: IHookFunctions): Promise<boolean> {
 				const webhookData = this.getWorkflowStaticData('node');
-				const mode = webhookData.mode as string;
-
-				if (!webhookData.mailHookId) {
-					return false;
-				}
-
-				const credentials = await this.getCredentials('customJsApi');
-				const mailHookId = webhookData.mailHookId as string;
-
-				// For existing hooks: just clear the webhookUrl, don't delete
-				if (mode === 'existing') {
-					try {
-						const options: any = {
-							method: 'PUT',
-							url: `https://api.app.customjs.io/mail-hook/api/mail-hook/id/${mailHookId}`,
-							headers: {
-								'X-Api-Key': credentials.apiKey as string,
-								'Content-Type': 'application/json',
-							},
-							body: { webhookUrl: '' },
-							json: true,
-						};
-						await this.helpers.request(options);
-					} catch (error) {
-						// Ignore errors during cleanup
-					}
-					delete webhookData.mailHookId;
-					delete webhookData.emailAddress;
-					return true;
-				}
-
-				// For new hooks: delete the hook entirely
-				const options: any = {
-					method: 'DELETE',
-					url: `https://api.app.customjs.io/mail-hook/api/mail-hook/id/${mailHookId}`,
-					headers: {
-						'X-Api-Key': credentials.apiKey as string,
-					},
-					json: true,
-				};
-
-				try {
-					await this.helpers.request(options);
-					delete webhookData.mailHookId;
-					delete webhookData.emailAddress;
-					return true;
-				} catch (error: any) {
-					if (error.response && error.response.status === 404) {
-						delete webhookData.mailHookId;
-						delete webhookData.emailAddress;
-						return false;
-					}
-					throw new NodeApiError(this.getNode(), error as any);
-				}
+				delete webhookData.mailHookId;
+				delete webhookData.emailAddress;
+				return true;
 			},
 		},
 	};
 
+	// ─── Webhook Handler ─────────────────────────────────────────────────────────
+
 	async webhook(this: IWebhookFunctions): Promise<IWebhookResponseData> {
-		const req = this.getRequestObject();
-		const bodyData = this.getBodyData();
-
-		let outputData: IDataObject = {};
-
-		if (req.headers['content-type']?.includes('multipart/form-data')) {
-			outputData = { ...bodyData };
-		} else {
-			outputData = { ...bodyData };
-		}
+		const bodyData = this.getBodyData() as IDataObject;
 		return {
-			workflowData: [
-				[
-					{
-						json: outputData,
-					},
-				],
-			],
+			workflowData: [[{ json: bodyData }]],
 		};
 	}
 }
