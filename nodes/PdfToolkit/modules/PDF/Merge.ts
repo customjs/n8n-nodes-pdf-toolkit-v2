@@ -5,7 +5,7 @@ export async function executeMerge(
     executeFunctions: IExecuteFunctions,
     apiHelper: ApiHelper,
     itemIndex: number
-): Promise<INodeExecutionData> {
+): Promise<INodeExecutionData | INodeExecutionData[]> {
     const item = executeFunctions.getInputData()[itemIndex];
     const inputType = executeFunctions.getNodeParameter('inputType', itemIndex) as string;
     const body: any = {
@@ -18,7 +18,7 @@ export async function executeMerge(
 
     if (inputType === 'binary') {
         // Merge all items if binary
-        if (itemIndex > 0) return { json: {}, pairedItem: { item: itemIndex } }; // Skip subsequent items
+        if (itemIndex > 0) return []; // Skip subsequent items
 
         const items = executeFunctions.getInputData();
         const binaryPropertyName = executeFunctions.getNodeParameter('binaryPropertyName', 0) as string;
