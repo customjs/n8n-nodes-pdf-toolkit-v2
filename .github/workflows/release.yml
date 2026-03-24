@@ -7,6 +7,9 @@ jobs:
   deploy-production:
     timeout-minutes: 15
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
 
     if: "!contains(github.event.head_commit.message, 'ci skip')"
     steps:
@@ -45,7 +48,7 @@ jobs:
         run: |
           npm version minor --no-git-tag-version
           echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-          npm publish --access public
+          npm publish --access public --provenance
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
