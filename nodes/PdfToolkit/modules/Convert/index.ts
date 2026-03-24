@@ -13,7 +13,7 @@ export async function executeConvert(
     apiHelper: ApiHelper,
     itemIndex: number,
     operation: string
-): Promise<INodeExecutionData> {
+): Promise<INodeExecutionData | INodeExecutionData[]> {
     switch (operation) {
         case 'pdfToPng':
             return executePdfToPng(executeFunctions, apiHelper, itemIndex);

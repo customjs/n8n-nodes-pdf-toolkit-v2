@@ -8,7 +8,7 @@ export async function executeData(
     apiHelper: ApiHelper,
     itemIndex: number,
     operation: string
-): Promise<INodeExecutionData> {
+): Promise<INodeExecutionData | INodeExecutionData[]> {
     switch (operation) {
         case 'jsonSelect':
             return executeJsonSelect(executeFunctions, apiHelper, itemIndex);

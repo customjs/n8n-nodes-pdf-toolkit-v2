@@ -12,7 +12,7 @@ export async function executePDF(
     apiHelper: ApiHelper,
     itemIndex: number,
     operation: string
-): Promise<INodeExecutionData> {
+): Promise<INodeExecutionData | INodeExecutionData[]> {
     switch (operation) {
         case 'compress':
             return executeCompress(executeFunctions, apiHelper, itemIndex);

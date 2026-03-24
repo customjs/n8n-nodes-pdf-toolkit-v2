@@ -9,7 +9,7 @@ export async function executeWeb(
     apiHelper: ApiHelper,
     itemIndex: number,
     operation: string
-): Promise<INodeExecutionData> {
+): Promise<INodeExecutionData | INodeExecutionData[]> {
     switch (operation) {
         case 'scrape':
             return executeScrape(executeFunctions, apiHelper, itemIndex);
