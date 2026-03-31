@@ -40,20 +40,6 @@ export class MailHookTrigger implements INodeType {
 		],
 	};
 
-	webhookMethods = {
-		default: {
-			async checkExists(this: IHookFunctions): Promise<boolean> {
-				return false;
-			},
-			async create(this: IHookFunctions): Promise<boolean> {
-				return true;
-			},
-			async delete(this: IHookFunctions): Promise<boolean> {
-				return true;
-			},
-		},
-	};
-
 	async webhook(this: IWebhookFunctions): Promise<IWebhookResponseData> {
 		const bodyData = this.getBodyData() as IDataObject;
 		return {
