@@ -1,5 +1,4 @@
 import {
-	IHookFunctions,
 	IWebhookFunctions,
 	IDataObject,
 	INodeType,
@@ -15,6 +14,7 @@ export class MailHookTrigger implements INodeType {
 		icon: 'file:customJs.svg',
 		group: ['trigger'],
 		version: 1,
+		subtitle: 'CustomJS Mail Hook',
 		description: 'Triggers the workflow when an email is received via CustomJS Mail Hook',
 		defaults: {
 			name: 'CustomJS Email Trigger',
