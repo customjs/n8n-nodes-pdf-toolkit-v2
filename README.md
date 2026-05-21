@@ -129,6 +129,14 @@ Add your Api Key and store securely
 - Input the PDF file you want to get form field names from.
 - Execute the workflow to get the form field names.
 
+### "Split PDF into Pages" node
+
+- Add the **Split PDF into Pages** node to your workflow.
+- Configure your CustomJS API credentials.
+- Input a PDF file (binary) or provide a URL.
+- Optionally set an **Output Filename Prefix** (default: `page`) — each page is returned as `page_1.pdf`, `page_2.pdf`, etc.
+- Execute the workflow — the node **returns one n8n item per page**, each containing the page as a binary PDF and the JSON fields `page` (page number) and `totalPages`.
+
 ### "Invoice Generator" node
 
 - Add the **Invoice Generator** node to your workflow.
