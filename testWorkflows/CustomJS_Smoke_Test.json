@@ -8,10 +8,10 @@
       "type": "CUSTOM.pdfToolkit",
       "typeVersion": 1,
       "position": [
-        0,
-        464
+        -96,
+        944
       ],
-      "id": "c3fa76fc-81fd-45fe-bcb1-a4269a384fd4",
+      "id": "bb69ce16-2ee7-4af1-a419-fbfc361f9eea",
       "name": "Convert PDF into Text",
       "credentials": {
         "customJsApi": {
@@ -28,10 +28,10 @@
       "type": "CUSTOM.pdfToolkit",
       "typeVersion": 1,
       "position": [
-        -336,
-        512
+        -432,
+        992
       ],
-      "id": "6546cac6-634e-46f0-a58a-593de0ad7ed3",
+      "id": "480c0d1c-793c-4dfd-b202-622350c92349",
       "name": "HTML to PDF",
       "credentials": {
         "customJsApi": {
@@ -45,10 +45,10 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        -1184,
-        848
+        -1280,
+        1328
       ],
-      "id": "a2ab28c3-dd3a-4056-95c8-d9eab78fb781",
+      "id": "e5b48f8b-3129-4ff1-b8c6-dae5b9d1477e",
       "name": "When clicking ‘Test workflow’"
     },
     {
@@ -56,10 +56,10 @@
       "type": "CUSTOM.pdfToolkit",
       "typeVersion": 1,
       "position": [
-        0,
-        640
+        -96,
+        1120
       ],
-      "id": "b4809cb1-f900-4e86-883b-5b994f675f0a",
+      "id": "c7fcefcf-33ae-4f24-89dd-01ad16b2656b",
       "name": "Convert PDF into PNG",
       "credentials": {
         "customJsApi": {
@@ -76,10 +76,10 @@
       "type": "CUSTOM.pdfToolkit",
       "typeVersion": 1,
       "position": [
-        0,
-        800
+        -96,
+        1280
       ],
-      "id": "55deab45-08a7-4b23-9ed9-0f537ffb5384",
+      "id": "f93bf6b7-fe29-4e78-b1e3-42621f31f24e",
       "name": "Extract Pages From PDF",
       "credentials": {
         "customJsApi": {
@@ -95,10 +95,10 @@
       "type": "CUSTOM.pdfToolkit",
       "typeVersion": 1,
       "position": [
-        0,
-        272
+        -96,
+        752
       ],
-      "id": "a235cc23-e6ff-43ad-bdd8-0f3464a1274f",
+      "id": "1885d796-4168-41b8-8945-5fc6c7449cda",
       "name": "Compress PDF file",
       "credentials": {
         "customJsApi": {
@@ -116,10 +116,10 @@
       "type": "CUSTOM.pdfToolkit",
       "typeVersion": 1,
       "position": [
-        0,
-        1312
+        -96,
+        1792
       ],
-      "id": "a7548403-a8b3-4e93-8f22-81c39cb795bb",
+      "id": "e3ae967f-8204-4d27-90f3-bbeb38cca425",
       "name": "Convert PDF into Text1",
       "credentials": {
         "customJsApi": {
@@ -136,10 +136,10 @@
       "type": "CUSTOM.pdfToolkit",
       "typeVersion": 1,
       "position": [
-        0,
-        1488
+        -96,
+        1968
       ],
-      "id": "39806c0a-a369-4fc5-a42b-7fdae0fdc2e3",
+      "id": "095079ce-bbea-4c1f-a125-6678990f2878",
       "name": "Convert PDF into PNG1",
       "credentials": {
         "customJsApi": {
@@ -158,10 +158,10 @@
       "type": "CUSTOM.pdfToolkit",
       "typeVersion": 1,
       "position": [
-        0,
-        1648
+        -96,
+        2128
       ],
-      "id": "e8be975e-2d3f-4c22-a51f-3fe6937c6ed1",
+      "id": "2f9e9b1a-1486-4266-9571-60b551cd67d0",
       "name": "Extract Pages From PDF1",
       "credentials": {
         "customJsApi": {
@@ -179,10 +179,10 @@
       "type": "CUSTOM.pdfToolkit",
       "typeVersion": 1,
       "position": [
-        0,
-        1152
+        -96,
+        1632
       ],
-      "id": "70a2c152-de80-4f19-9235-e7e6db7c1e34",
+      "id": "c7926f6c-f08f-474b-9309-ef6a0b28b31f",
       "name": "Compress PDF file1",
       "credentials": {
         "customJsApi": {
@@ -198,10 +198,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -544,
-        1520
+        -640,
+        2000
       ],
-      "id": "0f5b4fb2-0737-4293-8859-19db093d1663",
+      "id": "aa82a469-c996-43ef-ae62-a75f6d4057c9",
       "name": "Code"
     },
     {
@@ -213,10 +213,10 @@
       "type": "CUSTOM.pdfToolkit",
       "typeVersion": 1,
       "position": [
-        0,
-        0
+        -96,
+        480
       ],
-      "id": "d0f8932f-42c4-4069-8daa-bc33707c6f66",
+      "id": "b0665de4-f2c1-473d-979f-3a6daa9c41c8",
       "name": "Take a screenshot of a website",
       "credentials": {
         "customJsApi": {
@@ -233,10 +233,10 @@
       "type": "CUSTOM.pdfToolkit",
       "typeVersion": 1,
       "position": [
-        640,
-        544
+        544,
+        1024
       ],
-      "id": "69a138a6-5c57-428a-935a-bb470f12ca77",
+      "id": "7bfb8a14-1662-4446-b862-257d2309d811",
       "name": "Merge PDF",
       "credentials": {
         "customJsApi": {
@@ -250,10 +250,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.1,
       "position": [
-        400,
-        544
+        304,
+        1024
       ],
-      "id": "540ab015-c01a-41dd-af75-c91cadb95b25",
+      "id": "8eb322ae-e075-42e3-a5fd-5900518209cf",
       "name": "Merge"
     },
     {
@@ -263,10 +263,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -528,
-        1952
+        -624,
+        2432
       ],
-      "id": "25e8243d-2384-4be4-b08a-89a4a3b6c77c",
+      "id": "f7530a1e-6597-47ff-a25c-5bead8cedd25",
       "name": "Code1"
     },
     {
@@ -279,10 +279,10 @@
       "type": "CUSTOM.pdfToolkit",
       "typeVersion": 1,
       "position": [
-        0,
-        1952
+        -96,
+        2432
       ],
-      "id": "bbe5baf9-c18d-45e3-98cd-6dd3b6cf9227",
+      "id": "0b936b69-8ce8-4492-894f-189c366f4b30",
       "name": "Merge PDF1",
       "credentials": {
         "customJsApi": {
@@ -300,10 +300,10 @@
       "type": "CUSTOM.pdfToolkit",
       "typeVersion": 1,
       "position": [
-        0,
-        -176
+        -96,
+        304
       ],
-      "id": "15448277-beb1-4862-83aa-b4f5512bd598",
+      "id": "bac4647c-4f45-479c-ae76-b25330ca66b2",
       "name": "Advanced JSON Selector",
       "credentials": {
         "customJsApi": {
@@ -322,10 +322,10 @@
       "type": "CUSTOM.pdfToolkit",
       "typeVersion": 1,
       "position": [
-        0,
-        -352
+        -96,
+        128
       ],
-      "id": "47eddb45-b1cf-48ed-bea4-d65e6095ba08",
+      "id": "627e4aab-6bc3-4060-84a6-916f86825485",
       "name": "Advanced RegEx Tool",
       "credentials": {
         "customJsApi": {
@@ -342,10 +342,10 @@
       "type": "CUSTOM.pdfToolkit",
       "typeVersion": 1,
       "position": [
-        0,
-        -512
+        -96,
+        -32
       ],
-      "id": "649a2e44-efd1-4c50-a675-31b8b364027f",
+      "id": "5b84c474-fb3e-4e83-8017-f99c868337e4",
       "name": "JSON to TOON",
       "credentials": {
         "customJsApi": {
@@ -362,10 +362,10 @@
       "type": "CUSTOM.pdfToolkit",
       "typeVersion": 1,
       "position": [
-        0,
-        -672
+        -96,
+        -192
       ],
-      "id": "7588c4f6-8f7f-4766-97b1-3a6535b86bf4",
+      "id": "4d9854a7-fed2-44f9-98db-9bcbbb36d7ff",
       "name": "TOON to JSON",
       "credentials": {
         "customJsApi": {
@@ -382,10 +382,10 @@
       "type": "CUSTOM.pdfToolkit",
       "typeVersion": 1,
       "position": [
-        -528,
-        2272
+        -624,
+        2752
       ],
-      "id": "8e5e613b-dac9-4473-8d12-9d5f433b1dfe",
+      "id": "aaa063f6-9054-4bff-8d23-a6c0ac7a5903",
       "name": "Get HTML Pages",
       "credentials": {
         "customJsApi": {
@@ -421,10 +421,10 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.3,
       "position": [
-        -336,
-        2272
+        -432,
+        2752
       ],
-      "id": "4ff5ab2d-3dea-4cd7-a9d5-d467019fff95",
+      "id": "d00335cf-2900-448d-aec0-090ced8028d8",
       "name": "Filter",
       "alwaysOutputData": true
     },
@@ -456,10 +456,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -160,
-        2272
+        -256,
+        2752
       ],
-      "id": "0d7e1f62-8739-44de-a53c-22940d8fd14b",
+      "id": "ac8e626d-ad8a-4138-b0b1-ccb4490166d0",
       "name": "If"
     },
     {
@@ -471,10 +471,10 @@
       "type": "CUSTOM.pdfToolkit",
       "typeVersion": 1,
       "position": [
-        48,
-        2176
+        -48,
+        2656
       ],
-      "id": "fb3692a9-2944-4b04-a405-2d98628dff74",
+      "id": "23f4d8e2-31b0-499a-a12e-8bca5f0b0937",
       "name": "Upload new HTML Page",
       "credentials": {
         "customJsApi": {
@@ -494,10 +494,10 @@
       "type": "CUSTOM.pdfToolkit",
       "typeVersion": 1,
       "position": [
-        48,
-        2368
+        -48,
+        2848
       ],
-      "id": "3bc2b967-a93a-413e-8ec7-2477a277c211",
+      "id": "20509375-4d95-46ca-ad5c-5a674701be57",
       "name": "Update existing HTML Page",
       "credentials": {
         "customJsApi": {
@@ -516,10 +516,10 @@
       "type": "CUSTOM.pdfToolkit",
       "typeVersion": 1,
       "position": [
-        0,
-        992
+        -96,
+        1472
       ],
-      "id": "fb98734d-9d48-49fb-bc1b-844c518ba288",
+      "id": "abc0ad10-240a-4b9e-b9e2-0059461cf2d3",
       "name": "HTML to PDF1",
       "credentials": {
         "customJsApi": {
@@ -538,10 +538,10 @@
       "type": "CUSTOM.pdfToolkit",
       "typeVersion": 1,
       "position": [
-        -528,
-        2544
+        -624,
+        3024
       ],
-      "id": "1fa40339-cc4e-4cc4-84aa-228e1e13a22c",
+      "id": "85191242-b5c7-4ce6-883e-7b33fffecfff",
       "name": "Upsert HTML Page",
       "credentials": {
         "customJsApi": {
@@ -549,6 +549,40 @@
           "name": "CustomJS account"
         }
       }
+    },
+    {
+      "parameters": {
+        "resource": "pdf",
+        "operation": "splitPages"
+      },
+      "type": "CUSTOM.pdfToolkit",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        3296
+      ],
+      "id": "f1d4b2fa-5ea9-4aa5-8c37-6c6844f5e940",
+      "name": "Split PDF into individual pages",
+      "credentials": {
+        "customJsApi": {
+          "id": "BFGbk0a71fKWY967",
+          "name": "CustomJS account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://ontheline.trincoll.edu/images/bookdown/sample-local-pdf.pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -640,
+        3296
+      ],
+      "id": "9a36259d-40b9-48db-b151-102568a343a2",
+      "name": "HTTP Request"
     }
   ],
   "pinData": {},
@@ -634,6 +668,11 @@
           },
           {
             "node": "Upsert HTML Page",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request",
             "type": "main",
             "index": 0
           }
@@ -749,17 +788,28 @@
           }
         ]
       ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Split PDF into individual pages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "508ceb43-456b-4e62-80d3-c54d90d67316",
+  "versionId": "c539ce77-13be-438c-b3d3-1585653a0294",
   "meta": {
-    "instanceId": "b8910cb1c60a6ad5efd31d8728d14fced8e6aa982884148fc66455dfbe16fd9b",
-    "templateCredsSetupCompleted": true
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f73027ecad2e9560607d5eb3b82a45585e7b92fc26e1e10064997d9d4488f81f"
   },
-  "id": "7bx7OktEc4mWjzyS",
+  "id": "X5AsmEfS3EQ3JyWp",
   "tags": []
 }

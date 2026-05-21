@@ -6,6 +6,7 @@ import { executeExtractPages } from './ExtractPages';
 import { executeGetFormFields } from './GetFormFields';
 import { executeFillForm } from './FillForm';
 import { executeGenerateInvoice } from './GenerateInvoice';
+import { executeSplitPages } from './SplitPages';
 
 export async function executePDF(
     executeFunctions: IExecuteFunctions,
@@ -26,6 +27,8 @@ export async function executePDF(
             return executeFillForm(executeFunctions, apiHelper, itemIndex);
         case 'generateInvoice':
             return executeGenerateInvoice(executeFunctions, apiHelper, itemIndex);
+        case 'splitPages':
+            return executeSplitPages(executeFunctions, apiHelper, itemIndex);
         default:
             throw new NodeOperationError(executeFunctions.getNode(), `Unknown operation: ${operation}`, { itemIndex });
     }

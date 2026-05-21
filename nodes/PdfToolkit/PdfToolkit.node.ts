@@ -155,6 +155,11 @@ export class PdfToolkit implements INodeType {
                         value: 'generateInvoice',
                         action: 'Generate Invoice PDF',
                     },
+                    {
+                        name: 'Split Pages',
+                        value: 'splitPages',
+                        action: 'Split PDF into individual pages',
+                    },
                 ],
                 default: 'compress',
             },
@@ -270,7 +275,7 @@ export class PdfToolkit implements INodeType {
                 displayOptions: {
                     show: {
                         resource: ['convert', 'pdf'],
-                        operation: ['pdfToPng', 'pdfToText', 'compress', 'merge', 'extractPages', 'getFormFields', 'fillForm'],
+                        operation: ['pdfToPng', 'pdfToText', 'compress', 'merge', 'extractPages', 'getFormFields', 'fillForm', 'splitPages'],
                     },
                 },
             },
@@ -285,7 +290,7 @@ export class PdfToolkit implements INodeType {
                     show: {
                         inputType: ['binary'],
                         resource: ['convert', 'pdf'],
-                        operation: ['pdfToPng', 'pdfToText', 'compress', 'merge', 'extractPages', 'getFormFields', 'fillForm'],
+                        operation: ['pdfToPng', 'pdfToText', 'compress', 'merge', 'extractPages', 'getFormFields', 'fillForm', 'splitPages'],
                     },
                 },
                 description: 'The name of the binary property containing the data.',
@@ -301,7 +306,7 @@ export class PdfToolkit implements INodeType {
                     show: {
                         inputType: ['url'],
                         resource: ['convert', 'pdf'],
-                        operation: ['pdfToPng', 'pdfToText', 'compress', 'extractPages'],
+                        operation: ['pdfToPng', 'pdfToText', 'compress', 'extractPages', 'splitPages'],
                     },
                 },
                 description: 'URL of the file to process.',
@@ -407,6 +412,21 @@ export class PdfToolkit implements INodeType {
                         operation: ['extractPages'],
                     },
                 },
+            },
+            // Output Filename Prefix (Split Pages)
+            {
+                displayName: 'Output Filename Prefix',
+                name: 'outputFilenamePrefix',
+                type: 'string',
+                default: 'page',
+                required: false,
+                displayOptions: {
+                    show: {
+                        resource: ['pdf'],
+                        operation: ['splitPages'],
+                    },
+                },
+                description: 'Prefix for each output file. E.g. "page" → page_1.pdf, page_2.pdf, …',
             },
             // Form Fields (Fill Form)
             {
