@@ -9,7 +9,7 @@ import {
 
 export class MailHookTrigger implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'CustomJS Email Trigger',
+		displayName: 'CustomJS Mailhook (Trigger)',
 		name: 'mailHookTrigger',
 		icon: 'file:customJs.svg',
 		group: ['trigger'],
@@ -17,7 +17,7 @@ export class MailHookTrigger implements INodeType {
 		subtitle: 'CustomJS Mail Hook',
 		description: 'Triggers the workflow when an email is received via CustomJS Mail Hook',
 		defaults: {
-			name: 'CustomJS Email Trigger',
+			name: 'CustomJS Mailhook (Trigger)',
 		},
 		inputs: [],
 		outputs: [NodeConnectionType.Main],
