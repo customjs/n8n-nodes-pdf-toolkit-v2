@@ -28,8 +28,11 @@ export async function executeMerge(
             }
             return null;
         }));
-        const validFiles = files.filter(f => f);
-        body.input = { files: validFiles };
+        // Send as base64 strings: JSON-serialised Buffers ({type:'Buffer',data:[...]})
+        // inflate the payload ~3.6x and hit the 6MB Lambda request limit at ~1.7MB of PDFs.
+        // Base64 inflates only 1.33x; runtime-pdf's getPdfBytes decodes both formats.
+        const validFiles = files.filter((f): f is Buffer => Buffer.isBuffer(f) && f.length > 0);
+        body.input = { files: validFiles.map(f => f.toString('base64')) };
     } else {
         const urls = executeFunctions.getNodeParameter('urls', itemIndex) as string | string[];
         if (Array.isArray(urls)) {
