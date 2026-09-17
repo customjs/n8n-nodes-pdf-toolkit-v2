@@ -4,7 +4,6 @@ import {
     INodeType,
     INodeTypeDescription,
     NodeOperationError,
-    NodeConnectionType,
 } from 'n8n-workflow';
 
 import { ApiHelper } from './modules/ApiHelper';
@@ -18,15 +17,20 @@ export class PdfToolkit implements INodeType {
     description: INodeTypeDescription = {
         displayName: 'CustomJS (PDF & File Toolkit)',
         name: 'pdfToolkit',
-        icon: 'file:customJs.svg',
+        icon: {
+            light: 'file:customJs.svg',
+            dark: 'file:customJs.dark.svg',
+        },
         group: ['transform'],
         version: 1,
-        description: 'All-in-one toolkit for PDF, HTML, JSON, and file conversions.',
+        subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
+        description: 'All-in-one toolkit for PDF, HTML, JSON and file conversions',
         defaults: {
             name: 'PDF Toolkit',
         },
-        inputs: [NodeConnectionType.Main],
-        outputs: [NodeConnectionType.Main],
+        usableAsTool: true,
+        inputs: ['main'],
+        outputs: ['main'],
         credentials: [
             {
                 name: 'customJsApi',
@@ -45,20 +49,20 @@ export class PdfToolkit implements INodeType {
                         value: 'convert',
                     },
                     {
-                        name: 'PDF',
-                        value: 'pdf',
-                    },
-                    {
-                        name: 'Web',
-                        value: 'web',
-                    },
-                    {
                         name: 'Data',
                         value: 'data',
                     },
                     {
                         name: 'HTML Hosting',
                         value: 'page',
+                    },
+                    {
+                        name: 'PDF',
+                        value: 'pdf',
+                    },
+                    {
+                        name: 'Web',
+                        value: 'web',
                     },
                 ],
                 default: 'convert',
@@ -76,16 +80,6 @@ export class PdfToolkit implements INodeType {
                 },
                 options: [
                     {
-                        name: 'PDF to PNG',
-                        value: 'pdfToPng',
-                        action: 'Convert PDF to PNG',
-                    },
-                    {
-                        name: 'PDF to Text',
-                        value: 'pdfToText',
-                        action: 'Convert PDF to Text',
-                    },
-                    {
                         name: 'HTML to DOCX',
                         value: 'htmlToDocx',
                         action: 'Convert HTML to DOCX',
@@ -101,14 +95,24 @@ export class PdfToolkit implements INodeType {
                         action: 'Convert JSON to TOON',
                     },
                     {
-                        name: 'TOON to JSON',
-                        value: 'toonToJson',
-                        action: 'Convert TOON to JSON',
-                    },
-                    {
                         name: 'Markdown to HTML',
                         value: 'markdownToHtml',
                         action: 'Convert Markdown to HTML',
+                    },
+                    {
+                        name: 'PDF to PNG',
+                        value: 'pdfToPng',
+                        action: 'Convert PDF to PNG',
+                    },
+                    {
+                        name: 'PDF to Text',
+                        value: 'pdfToText',
+                        action: 'Convert PDF to text',
+                    },
+                    {
+                        name: 'TOON to JSON',
+                        value: 'toonToJson',
+                        action: 'Convert TOON to JSON',
                     },
                 ],
                 default: 'pdfToPng',
@@ -131,29 +135,29 @@ export class PdfToolkit implements INodeType {
                         action: 'Compress PDF',
                     },
                     {
-                        name: 'Merge',
-                        value: 'merge',
-                        action: 'Merge PDFs',
-                    },
-                    {
                         name: 'Extract Pages',
                         value: 'extractPages',
-                        action: 'Extract Pages from PDF',
-                    },
-                    {
-                        name: 'Get Form Fields',
-                        value: 'getFormFields',
-                        action: 'Get PDF Form Fields',
+                        action: 'Extract pages from PDF',
                     },
                     {
                         name: 'Fill Form',
                         value: 'fillForm',
-                        action: 'Fill PDF Form',
+                        action: 'Fill PDF form',
                     },
                     {
                         name: 'Generate Invoice',
                         value: 'generateInvoice',
-                        action: 'Generate Invoice PDF',
+                        action: 'Generate invoice PDF',
+                    },
+                    {
+                        name: 'Get Form Fields',
+                        value: 'getFormFields',
+                        action: 'Get PDF form fields',
+                    },
+                    {
+                        name: 'Merge',
+                        value: 'merge',
+                        action: 'Merge PDFs',
                     },
                     {
                         name: 'Split Pages',
@@ -178,12 +182,12 @@ export class PdfToolkit implements INodeType {
                     {
                         name: 'Scrape',
                         value: 'scrape',
-                        action: 'Scrape Website',
+                        action: 'Scrape website',
                     },
                     {
                         name: 'Screenshot',
                         value: 'screenshot',
-                        action: 'Take Screenshot',
+                        action: 'Take screenshot',
                     },
                     {
                         name: 'SSL Check',
@@ -208,12 +212,12 @@ export class PdfToolkit implements INodeType {
                     {
                         name: 'JSON Select',
                         value: 'jsonSelect',
-                        action: 'Select JSON Data',
+                        action: 'Select JSON data',
                     },
                     {
                         name: 'Regex',
                         value: 'regex',
-                        action: 'Regex Tool',
+                        action: 'Regex tool',
                     },
                 ],
                 default: 'jsonSelect',
@@ -231,24 +235,24 @@ export class PdfToolkit implements INodeType {
                 },
                 options: [
                     {
-                        name: 'Get HTML Pages',
+                        name: 'Create or Update',
+                        value: 'upsert',
+                        action: 'Create or update an HTML page',
+                    },
+                    {
+                        name: 'Get Many',
                         value: 'getAll',
-                        action: 'Get HTML Pages',
+                        action: 'Get many HTML pages',
                     },
                     {
                         name: 'Host HTML Page',
                         value: 'upload',
-                        action: 'Upload new HTML Page',
+                        action: 'Upload a new HTML page',
                     },
                     {
                         name: 'Update HTML Page',
                         value: 'update',
-                        action: 'Update existing HTML Page',
-                    },
-                    {
-                        name: 'Upsert HTML Page',
-                        value: 'upsert',
-                        action: 'Upsert HTML Page',
+                        action: 'Update an existing HTML page',
                     },
                 ],
                 default: 'upload',
@@ -293,7 +297,7 @@ export class PdfToolkit implements INodeType {
                         operation: ['pdfToPng', 'pdfToText', 'compress', 'merge', 'extractPages', 'getFormFields', 'fillForm', 'splitPages'],
                     },
                 },
-                description: 'The name of the binary property containing the data.',
+                description: 'The name of the binary property containing the data',
             },
             // URL Input
             {
@@ -309,7 +313,7 @@ export class PdfToolkit implements INodeType {
                         operation: ['pdfToPng', 'pdfToText', 'compress', 'extractPages', 'splitPages'],
                     },
                 },
-                description: 'URL of the file to process.',
+                description: 'URL of the file to process',
             },
             // URL Input for Merge (Array)
             {
@@ -325,7 +329,7 @@ export class PdfToolkit implements INodeType {
                         operation: ['merge'],
                     },
                 },
-                description: 'Comma-separated URLs of the files to process.',
+                description: 'Comma-separated URLs of the files to process',
             },
             // HTML Input
             {
@@ -343,7 +347,7 @@ export class PdfToolkit implements INodeType {
                         operation: ['htmlToDocx', 'htmlToPdf'],
                     },
                 },
-                description: 'HTML content to convert.',
+                description: 'HTML content to convert',
             },
             // JSON Input
             {
@@ -361,7 +365,7 @@ export class PdfToolkit implements INodeType {
                         operation: ['jsonToToon', 'jsonSelect'],
                     },
                 },
-                description: 'JSON content to process.',
+                description: 'JSON content to process',
             },
             // TOON Input
             {
@@ -379,7 +383,7 @@ export class PdfToolkit implements INodeType {
                         operation: ['toonToJson'],
                     },
                 },
-                description: 'TOON string to convert.',
+                description: 'TOON string to convert',
             },
             // Markdown Input
             {
@@ -397,7 +401,7 @@ export class PdfToolkit implements INodeType {
                         operation: ['markdownToHtml'],
                     },
                 },
-                description: 'Markdown content to convert.',
+                description: 'Markdown content to convert',
             },
             // Page Range (Extract Pages)
             {
@@ -419,7 +423,6 @@ export class PdfToolkit implements INodeType {
                 name: 'outputFilenamePrefix',
                 type: 'string',
                 default: 'page',
-                required: false,
                 displayOptions: {
                     show: {
                         resource: ['pdf'],
@@ -664,8 +667,8 @@ export class PdfToolkit implements INodeType {
                 options: [
                     { name: 'Extract', value: 'extract' },
                     { name: 'Replace', value: 'replace' },
-                    { name: 'Test', value: 'test' },
                     { name: 'Split', value: 'split' },
+                    { name: 'Test', value: 'test' },
                 ],
                 default: 'extract',
                 displayOptions: {
@@ -695,28 +698,26 @@ export class PdfToolkit implements INodeType {
                 name: 'pdfWidthMm',
                 type: 'number',
                 default: 210,
-                required: false,
                 displayOptions: {
                     show: {
                         resource: ['convert'],
                         operation: ['htmlToPdf'],
                     },
                 },
-                description: 'Width of the PDF page in millimeters.',
+                description: 'Width of the PDF page in millimeters',
             },
             {
                 displayName: 'PDF Page Height (mm)',
                 name: 'pdfHeightMm',
                 type: 'number',
                 default: 297,
-                required: false,
                 displayOptions: {
                     show: {
                         resource: ['convert'],
                         operation: ['htmlToPdf'],
                     },
                 },
-                description: 'Height of the PDF page in millimeters.',
+                description: 'Height of the PDF page in millimeters',
             },
 
             // --- Page Properties ---
@@ -732,21 +733,20 @@ export class PdfToolkit implements INodeType {
                         operation: ['update'],
                     },
                 },
-                description: 'The ID of the page to update.',
+                description: 'The ID of the page to update',
             },
             {
                 displayName: 'Page Name',
                 name: 'pageName',
                 type: 'string',
                 default: '',
-                required: false,
                 displayOptions: {
                     show: {
                         resource: ['page'],
                         operation: ['upload', 'update', 'upsert'],
                     },
                 },
-                description: 'The name of the page.',
+                description: 'The name of the page',
             },
 
             {
@@ -764,7 +764,7 @@ export class PdfToolkit implements INodeType {
                         operation: ['upload', 'update', 'upsert'],
                     },
                 },
-                description: 'HTML content to upload.',
+                description: 'HTML content to upload',
             },
 
             // Output Filename (PDF)
@@ -773,14 +773,13 @@ export class PdfToolkit implements INodeType {
                 name: 'outputFilenamePdf',
                 type: 'string',
                 default: 'output.pdf',
-                required: false,
                 displayOptions: {
                     show: {
                         resource: ['convert', 'pdf'],
                         operation: ['htmlToPdf', 'compress', 'merge', 'extractPages', 'fillForm', 'generateInvoice'],
                     },
                 },
-                description: 'Name of the output file (including extension).',
+                description: 'Name of the output file (including extension)',
             },
             // Output Filename (PNG)
             {
@@ -788,14 +787,13 @@ export class PdfToolkit implements INodeType {
                 name: 'outputFilenamePng',
                 type: 'string',
                 default: 'output.png',
-                required: false,
                 displayOptions: {
                     show: {
                         resource: ['convert', 'web'],
                         operation: ['pdfToPng', 'screenshot'],
                     },
                 },
-                description: 'Name of the output file (including extension).',
+                description: 'Name of the output file (including extension)',
             },
             // Output Filename (PNG) for Scraper
             {
@@ -803,7 +801,6 @@ export class PdfToolkit implements INodeType {
                 name: 'outputFilenamePng',
                 type: 'string',
                 default: 'output.png',
-                required: false,
                 displayOptions: {
                     show: {
                         resource: ['web'],
@@ -811,7 +808,7 @@ export class PdfToolkit implements INodeType {
                         returnValueType: ['binary'],
                     },
                 },
-                description: 'Name of the output file (including extension).',
+                description: 'Name of the output file (including extension)',
             },
             // Output Filename (DOCX)
             {
@@ -819,14 +816,13 @@ export class PdfToolkit implements INodeType {
                 name: 'outputFilenameDocx',
                 type: 'string',
                 default: 'output.docx',
-                required: false,
                 displayOptions: {
                     show: {
                         resource: ['convert'],
                         operation: ['htmlToDocx'],
                     },
                 },
-                description: 'Name of the output file (including extension).',
+                description: 'Name of the output file (including extension)',
             },
         ],
     };

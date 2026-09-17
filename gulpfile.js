@@ -1,7 +1,11 @@
-const { src, dest } = require("gulp");
+const { src, dest, parallel } = require("gulp");
 
-function copyIcons() {
+function copyNodeIcons() {
   return src("nodes/**/*.svg").pipe(dest("dist/nodes/"));
 }
 
-exports["build:icons"] = copyIcons;
+function copyCredentialIcons() {
+  return src("credentials/**/*.svg").pipe(dest("dist/credentials/"));
+}
+
+exports["build:icons"] = parallel(copyNodeIcons, copyCredentialIcons);
