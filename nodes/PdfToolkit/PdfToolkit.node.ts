@@ -206,9 +206,24 @@ export class PdfToolkit implements INodeType {
                 },
                 options: [
                     {
+                        name: 'AI JSON Parser',
+                        value: 'parseAiJson',
+                        action: 'Parse AI JSON (clean and repair)',
+                    },
+                    {
+                        name: 'File to Base64 (from URL)',
+                        value: 'urlToBase64',
+                        action: 'Download a file as Base64',
+                    },
+                    {
                         name: 'JSON Select',
                         value: 'jsonSelect',
                         action: 'Select JSON Data',
+                    },
+                    {
+                        name: 'Parse Localized Number',
+                        value: 'parseNumber',
+                        action: 'Parse a localized number',
                     },
                     {
                         name: 'Regex',
@@ -687,6 +702,81 @@ export class PdfToolkit implements INodeType {
                         regexOperation: ['replace'],
                     },
                 },
+            },
+            {
+                displayName: 'JSON Text',
+                name: 'jsonText',
+                type: 'string',
+                typeOptions: {
+                    rows: 5,
+                },
+                default: '',
+                required: true,
+                displayOptions: {
+                    show: {
+                        resource: ['data'],
+                        operation: ['parseAiJson'],
+                    },
+                },
+                description: 'Raw text that should contain JSON, e.g. an AI model answer.',
+            },
+            {
+                displayName: 'Strict Mode',
+                name: 'strict',
+                type: 'boolean',
+                default: false,
+                displayOptions: {
+                    show: {
+                        resource: ['data'],
+                        operation: ['parseAiJson'],
+                    },
+                },
+                description: 'Strict mode: no content repairs.',
+            },
+            {
+                displayName: 'Value',
+                name: 'value',
+                type: 'string',
+                default: '',
+                required: true,
+                displayOptions: {
+                    show: {
+                        resource: ['data'],
+                        operation: ['parseNumber'],
+                    },
+                },
+                description: 'The localized number text to parse, e.g. "1.234,56 EUR" or "$1,234.56".',
+            },
+            {
+                displayName: 'Number Format',
+                name: 'format',
+                type: 'options',
+                options: [
+                    { name: 'Auto Detect', value: 'auto' },
+                    { name: 'EU (1.234,56)', value: 'eu' },
+                    { name: 'US (1,234.56)', value: 'us' },
+                ],
+                default: 'auto',
+                displayOptions: {
+                    show: {
+                        resource: ['data'],
+                        operation: ['parseNumber'],
+                    },
+                },
+            },
+            {
+                displayName: 'File URL',
+                name: 'url',
+                type: 'string',
+                default: '',
+                required: true,
+                displayOptions: {
+                    show: {
+                        resource: ['data'],
+                        operation: ['urlToBase64'],
+                    },
+                },
+                description: 'URL of the file to download and return as Base64 (max 8 MB).',
             },
 
             // HTML to PDF Properties
