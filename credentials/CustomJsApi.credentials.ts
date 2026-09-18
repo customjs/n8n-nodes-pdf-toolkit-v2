@@ -1,5 +1,6 @@
 import {
   IAuthenticateGeneric,
+  Icon,
   ICredentialTestRequest,
   ICredentialType,
   INodeProperties,
@@ -9,6 +10,10 @@ export class CustomJsApi implements ICredentialType {
   name = "customJsApi";
   displayName = "CustomJS API";
   documentationUrl = "https://www.customjs.space/";
+  icon: Icon = {
+    light: "file:customJs.svg",
+    dark: "file:customJs.dark.svg",
+  };
   properties: INodeProperties[] = [
     {
       displayName: "API Key",
@@ -16,7 +21,7 @@ export class CustomJsApi implements ICredentialType {
       type: "string",
       typeOptions: { password: true },
       default: "",
-      description: "You can get API Key for CustomJS from https://www.customjs.space/",
+      description: "You can get an API Key for CustomJS from https://www.customjs.space/",
       required: true,
     },
   ];

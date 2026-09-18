@@ -1,26 +1,29 @@
 import {
+	IHookFunctions,
 	IWebhookFunctions,
 	IDataObject,
 	INodeType,
 	INodeTypeDescription,
 	IWebhookResponseData,
-	NodeConnectionType,
 } from 'n8n-workflow';
 
 export class MailHookTrigger implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'CustomJS Mailhook (Trigger)',
+		displayName: 'CustomJS Mail Hook Trigger',
 		name: 'mailHookTrigger',
-		icon: 'file:customJs.svg',
+		icon: {
+			light: 'file:customJs.svg',
+			dark: 'file:customJs.dark.svg',
+		},
 		group: ['trigger'],
 		version: 1,
 		subtitle: 'CustomJS Mail Hook',
 		description: 'Triggers the workflow when an email is received via CustomJS Mail Hook',
 		defaults: {
-			name: 'CustomJS Mailhook (Trigger)',
+			name: 'CustomJS Mail Hook Trigger',
 		},
 		inputs: [],
-		outputs: [NodeConnectionType.Main],
+		outputs: ['main'],
 		credentials: [],
 		webhooks: [
 			{
@@ -38,6 +41,28 @@ export class MailHookTrigger implements INodeType {
 				default: '',
 			},
 		],
+	};
+
+	// The CustomJS Mail Hook is registered by the user on the CustomJS platform: they
+	// create the Mail Hook there and paste in the webhook URL shown by this node. There
+	// is no public API to create, look up or remove that registration on their behalf, so
+	// these lifecycle hooks are intentional no-ops. They exist so n8n can run the full
+	// webhook lifecycle (activate, verify, deactivate) without erroring, and are the place
+	// to add real registration calls once the platform exposes an API for it.
+	webhookMethods = {
+		default: {
+			async checkExists(this: IHookFunctions): Promise<boolean> {
+				// Reported as existing so n8n never tries to auto-create a registration
+				// that only the user can make on the CustomJS platform.
+				return true;
+			},
+			async create(this: IHookFunctions): Promise<boolean> {
+				return true;
+			},
+			async delete(this: IHookFunctions): Promise<boolean> {
+				return true;
+			},
+		},
 	};
 
 	async webhook(this: IWebhookFunctions): Promise<IWebhookResponseData> {
