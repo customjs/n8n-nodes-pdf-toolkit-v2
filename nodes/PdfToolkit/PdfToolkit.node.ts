@@ -3,6 +3,7 @@ import {
     INodeExecutionData,
     INodeType,
     INodeTypeDescription,
+    NodeConnectionTypes,
     NodeOperationError,
 } from 'n8n-workflow';
 
@@ -29,8 +30,8 @@ export class PdfToolkit implements INodeType {
             name: 'PDF Toolkit',
         },
         usableAsTool: true,
-        inputs: ['main'],
-        outputs: ['main'],
+        inputs: [NodeConnectionTypes.Main],
+        outputs: [NodeConnectionTypes.Main],
         credentials: [
             {
                 name: 'customJsApi',
@@ -97,7 +98,7 @@ export class PdfToolkit implements INodeType {
                     {
                         name: 'Markdown to HTML',
                         value: 'markdownToHtml',
-                        action: 'Convert Markdown to HTML',
+                        action: 'Convert markdown to HTML',
                     },
                     {
                         name: 'PDF to PNG',
@@ -157,7 +158,7 @@ export class PdfToolkit implements INodeType {
                     {
                         name: 'Merge',
                         value: 'merge',
-                        action: 'Merge PDFs',
+                        action: 'Merge PDF files',
                     },
                     {
                         name: 'Split Pages',
@@ -694,7 +695,7 @@ export class PdfToolkit implements INodeType {
 
             // HTML to PDF Properties
             {
-                displayName: 'PDF Page Width (mm)',
+                displayName: 'PDF Page Width in Millimeters',
                 name: 'pdfWidthMm',
                 type: 'number',
                 default: 210,
@@ -707,7 +708,7 @@ export class PdfToolkit implements INodeType {
                 description: 'Width of the PDF page in millimeters',
             },
             {
-                displayName: 'PDF Page Height (mm)',
+                displayName: 'PDF Page Height in Millimeters',
                 name: 'pdfHeightMm',
                 type: 'number',
                 default: 297,

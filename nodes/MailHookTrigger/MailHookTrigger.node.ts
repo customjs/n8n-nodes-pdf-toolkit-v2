@@ -5,6 +5,7 @@ import {
 	INodeType,
 	INodeTypeDescription,
 	IWebhookResponseData,
+	NodeConnectionTypes,
 } from 'n8n-workflow';
 
 export class MailHookTrigger implements INodeType {
@@ -23,7 +24,7 @@ export class MailHookTrigger implements INodeType {
 			name: 'CustomJS Mail Hook Trigger',
 		},
 		inputs: [],
-		outputs: ['main'],
+		outputs: [NodeConnectionTypes.Main],
 		credentials: [],
 		webhooks: [
 			{
