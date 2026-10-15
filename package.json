@@ -39,7 +39,7 @@
     "typescript": "^5.0.0"
   },
   "peerDependencies": {
-    "n8n-workflow": ">=1.83.0"
+    "n8n-workflow": "*"
   },
   "type": "commonjs",
   "main": "index.js",
