@@ -16,7 +16,7 @@ import { executePage } from './modules/Page';
 
 export class PdfToolkit implements INodeType {
     description: INodeTypeDescription = {
-        displayName: 'CustomJS (PDF & File Toolkit)',
+        displayName: 'CustomJS (HTML, PDF Generation & Merge)',
         name: 'pdfToolkit',
         icon: {
             light: 'file:customJs.svg',
