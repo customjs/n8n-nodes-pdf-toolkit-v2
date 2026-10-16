@@ -16,7 +16,7 @@ import { executePage } from './modules/Page';
 
 export class PdfToolkit implements INodeType {
     description: INodeTypeDescription = {
-        displayName: 'CustomJS (HTML, PDF Generation & Merge)',
+        displayName: 'CustomJS: HTML to PDF, PNG & Merge',
         name: 'pdfToolkit',
         icon: {
             light: 'file:customJs.svg',
@@ -26,6 +26,41 @@ export class PdfToolkit implements INodeType {
         version: 1,
         subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
         description: 'All-in-one toolkit for PDF, HTML, JSON and file conversions',
+        // Search aliases for the n8n node panel: n8n's node search only matches
+        // displayName and codex.alias, not the description or operation names.
+        codex: {
+            alias: [
+                'Custom JS',
+                'HTML to PDF',
+                'html2pdf',
+                'URL to PDF',
+                'Website to PDF',
+                'Generate PDF',
+                'PDF Generator',
+                'Convert PDF',
+                'PDF to PNG',
+                'PDF to Image',
+                'Merge PDF',
+                'Combine PDF',
+                'PDF to Text',
+                'Extract Text',
+                'Split PDF',
+                'Extract Pages',
+                'Compress PDF',
+                'HTML to DOCX',
+                'Word',
+                'Fill PDF Form',
+                'Form Fields',
+                'Invoice',
+                'Generate Report',
+                'Screenshot',
+                'Website Screenshot',
+                'Scrape',
+                'Markdown',
+                'JSON',
+                'TOON',
+            ],
+        },
         defaults: {
             name: 'PDF Toolkit',
         },
